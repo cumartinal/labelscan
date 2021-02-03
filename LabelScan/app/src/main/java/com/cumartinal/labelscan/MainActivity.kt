@@ -3,8 +3,12 @@ package com.cumartinal.labelscan
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.renderscript.ScriptGroup
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -12,8 +16,12 @@ import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
+import com.google.mlkit.vision.text.TextRecognition
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import java.io.IOException
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,6 +69,19 @@ class MainActivity : AppCompatActivity() {
 
         // Set up image capture listener, which is triggered after photo has
         // been taken
+        imageCapture.takePicture(ContextCompat.getMainExecutor(this),
+                object : ImageCapture.OnImageCapturedCallback() {
+                    override fun onCaptureSuccess(image: ImageProxy) {
+                        analyze(image)
+                        super.onCaptureSuccess(image)
+                    }
+
+                    override fun onError(exc: ImageCaptureException) {
+                        Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                    }
+        })
+
+        /*
         imageCapture.takePicture(
                 outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
             override fun onError(exc: ImageCaptureException) {
@@ -72,9 +93,11 @@ class MainActivity : AppCompatActivity() {
                 val msg = "Photo capture succeeded: $savedUri"
                 Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                 Log.d(TAG, msg)
+                analyze(baseContext, savedUri)
             }
-        })
+        }) */
     }
+
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
@@ -109,6 +132,29 @@ class MainActivity : AppCompatActivity() {
             }
 
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun analyze(imageProxy: ImageProxy) {
+        val image = imageProxy.image
+        if (image != null) {
+            val image = InputImage.fromMediaImage(image,
+                    imageProxy.imageInfo.rotationDegrees)
+            // Pass image to an ML Kit Vision API
+            val recognizer = TextRecognition.getClient()
+            val result = recognizer.process(image)
+                    .addOnSuccessListener { visionText ->
+                        // Task completed successfully
+                        val recognizedText : String = visionText.text
+                        Log.d("TAG", recognizedText)
+                        Toast.makeText(baseContext, recognizedText, Toast.LENGTH_LONG).show()
+                    }
+                    .addOnCompleteListener { _ ->
+                        imageProxy.close()
+                    }
+                    .addOnFailureListener { e ->
+                        // Task failed with an exception
+                    }
+        }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
