@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">LabelScan</string>
-    <string name="scan_fab">Scan label</string>
+    <string name="string_scan_fab">Scan label</string>
+    <string name="string_camera_helptext">Scan a label</string>
 </resources>

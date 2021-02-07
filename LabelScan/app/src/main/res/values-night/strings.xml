@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="string_scan_fab" />
+    <string name="camera_helptext">Scan a label</string>
+    <string name="string_camera_helptext">Scan a label</string>
+</resources>
