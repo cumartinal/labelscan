@@ -3,10 +3,7 @@ package com.cumartinal.labelscan
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.renderscript.ScriptGroup
 import android.util.Log
@@ -58,6 +55,8 @@ class MainActivity : AppCompatActivity() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
+        // Code that is used to save the image, not needed until future features
+        /*
         // Create time-stamped output file to hold the image
         val photoFile = File(
                 outputDirectory,
@@ -66,6 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+         */
 
         // Set up image capture listener, which is triggered after photo has
         // been taken
@@ -80,22 +80,6 @@ class MainActivity : AppCompatActivity() {
                         Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                     }
         })
-
-        /*
-        imageCapture.takePicture(
-                outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
-            override fun onError(exc: ImageCaptureException) {
-                Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-            }
-
-            override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                val savedUri = Uri.fromFile(photoFile)
-                val msg = "Photo capture succeeded: $savedUri"
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                Log.d(TAG, msg)
-                analyze(baseContext, savedUri)
-            }
-        }) */
     }
 
 
@@ -134,6 +118,8 @@ class MainActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
+    // Method that takes the media.Image from takePhoto() and runs it through
+    // MLKit to extract the text
     private fun analyze(imageProxy: ImageProxy) {
         val image = imageProxy.image
         if (image != null) {
@@ -148,11 +134,12 @@ class MainActivity : AppCompatActivity() {
                         Log.d("TAG", recognizedText)
                         Toast.makeText(baseContext, recognizedText, Toast.LENGTH_LONG).show()
                     }
-                    .addOnCompleteListener { _ ->
+                    .addOnCompleteListener {
                         imageProxy.close()
                     }
                     .addOnFailureListener { e ->
                         // Task failed with an exception
+                        Log.e(TAG, "MLKit text recognition failed", e)
                     }
         }
     }
@@ -162,6 +149,8 @@ class MainActivity : AppCompatActivity() {
                 baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
+    // Not needed for now, possibly needed in the future if user's want
+    // to store the photo for future features
     private fun getOutputDirectory(): File {
         val mediaDir = externalMediaDirs.firstOrNull()?.let {
             File(it, resources.getString(R.string.app_name)).apply { mkdirs() } }
