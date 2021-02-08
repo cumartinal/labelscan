@@ -3,10 +3,13 @@ package com.cumartinal.labelscan
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.renderscript.ScriptGroup
 import android.util.Log
+import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,6 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 typealias LumaListener = (luma: Double) -> Unit
+const val EXTRA_MESSAGE = "com.cumartinal.LabelScan.TEXT"
 
 class MainActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
@@ -123,6 +127,7 @@ class MainActivity : AppCompatActivity() {
     private fun analyze(imageProxy: ImageProxy) {
         val image = imageProxy.image
         if (image != null) {
+            Toast.makeText(baseContext, "Analysing label...", Toast.LENGTH_LONG).show()
             val image = InputImage.fromMediaImage(image,
                     imageProxy.imageInfo.rotationDegrees)
             // Pass image to an ML Kit Vision API
@@ -132,7 +137,9 @@ class MainActivity : AppCompatActivity() {
                         // Task completed successfully
                         val recognizedText : String = visionText.text
                         Log.d("TAG", recognizedText)
-                        Toast.makeText(baseContext, recognizedText, Toast.LENGTH_LONG).show()
+                        //Toast.makeText(baseContext, recognizedText, Toast.LENGTH_LONG).show()
+                        // Send recognized text to new activity
+                        sendText(recognizedText)
                     }
                     .addOnCompleteListener {
                         imageProxy.close()
@@ -176,6 +183,14 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    // Go to DisplayTextActivity to show recognized text
+    private fun sendText(message : String) {
+        val intent = Intent(this, DisplayTextActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE, message)
+        }
+        startActivity(intent)
     }
 
     companion object {

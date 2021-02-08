@@ -54,21 +54,16 @@
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         />
 
-    <!--
-    Hardcoded contentDescription as doing @string/string_scan_fab
-    does not work with TalkBack
-    -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/camera_capture_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
-        android:contentDescription="Scan label"
+        android:contentDescription="@string/string_scan_fab"
         app:fabCustomSize="75dp"
-        app:maxImageSize="32dp"
-        app:srcCompat="@drawable/baseline_camera_alt_24"
         app:layout_anchor="@id/bottomAppBar"
-        />
+        app:maxImageSize="32dp"
+        app:srcCompat="@drawable/baseline_camera_alt_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
