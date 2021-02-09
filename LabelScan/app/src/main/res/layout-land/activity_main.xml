@@ -22,11 +22,12 @@
 
         <ImageView
             android:id="@+id/camera_frame"
-            android:layout_width="match_parent"
-            android:layout_height="550dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
-            android:layout_marginBottom="75dp"
+            android:layout_marginBottom="50dp"
             android:importantForAccessibility="no"
+            android:rotation="90"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/viewFinder"
@@ -39,10 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="Scan a label"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/camera_frame"
             app:layout_constraintEnd_toEndOf="@+id/camera_frame"
             app:layout_constraintStart_toStartOf="@+id/camera_frame"
             app:layout_constraintTop_toTopOf="@+id/viewFinder" />
@@ -51,22 +51,22 @@
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="75dp"
-        android:layout_gravity="bottom"
+        android:layout_gravity="bottom|end"
         android:importantForAccessibility="no"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        />
+        android:minHeight="50dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/camera_capture_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/string_scan_fab"
         app:fabCustomSize="75dp"
-        app:layout_anchor="@id/bottomAppBar"
         app:maxImageSize="32dp"
         app:srcCompat="@drawable/baseline_camera_alt_24" />
 
