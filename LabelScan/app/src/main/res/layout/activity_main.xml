@@ -70,5 +70,16 @@
         app:maxImageSize="32dp"
         app:srcCompat="@drawable/baseline_camera_alt_24" />
 
+    <!-- Linear progress indicator -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/image_analysis_progress_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:trackThickness="8dp"
+        android:visibility="gone"
+        android:contentDescription="@string/progress_indicator_desc"
+        android:importantForAccessibility="no" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

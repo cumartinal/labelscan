@@ -13,4 +13,8 @@
     <color name="green_low">#FF4AB56A</color>
     <color name="green_medium">#FF00843E</color>
     <color name="green_strong">#FF005614</color>
+
+    <color name="green_medium_split_comp1">#FF843000</color>
+    <color name="green_medium_split_comp2">#FF840023</color>
+
 </resources>

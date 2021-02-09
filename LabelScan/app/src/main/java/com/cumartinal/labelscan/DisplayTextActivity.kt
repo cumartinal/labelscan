@@ -22,6 +22,13 @@ class DisplayTextActivity : AppCompatActivity() {
         }
     }
 
+    // Override function of back button to avoid softlocking on dialog
+    // Temporal solution, TODO
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
     fun newScan (view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

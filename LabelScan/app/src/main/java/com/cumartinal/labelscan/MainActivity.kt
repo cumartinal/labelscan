@@ -3,6 +3,7 @@ package com.cumartinal.labelscan
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,11 +12,14 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -56,6 +60,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
+        // Create alert
+        MaterialAlertDialogBuilder(this@MainActivity)
+                .setTitle("Analysing label")
+                .setMessage("Please wait...")
+                .setCancelable(false)
+                .show()
+        // Show progress indicator
+        image_analysis_progress_indicator.show()
+
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
@@ -127,7 +140,6 @@ class MainActivity : AppCompatActivity() {
     private fun analyze(imageProxy: ImageProxy) {
         val image = imageProxy.image
         if (image != null) {
-            Toast.makeText(baseContext, "Analysing label...", Toast.LENGTH_LONG).show()
             val image = InputImage.fromMediaImage(image,
                     imageProxy.imageInfo.rotationDegrees)
             // Pass image to an ML Kit Vision API
@@ -192,6 +204,7 @@ class MainActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+
 
     companion object {
         private const val TAG = "CameraXBasic"

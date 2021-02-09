@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Unused -->
+    <array name="progress_indicator_colour_array">
+        <item>
+            @color/green_medium_split_comp1
+        </item>
+        <item>
+            @color/green_medium_split_comp2
+        </item>
+        <item>
+            @color/green_medium
+        </item>
+    </array>
+</resources>
