@@ -29,6 +29,7 @@ class DisplayTextActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan (view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

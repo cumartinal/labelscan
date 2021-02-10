@@ -147,11 +147,9 @@ class MainActivity : AppCompatActivity() {
             val result = recognizer.process(image)
                     .addOnSuccessListener { visionText ->
                         // Task completed successfully
-                        val recognizedText : String = visionText.text
-                        Log.d("TAG", recognizedText)
-                        //Toast.makeText(baseContext, recognizedText, Toast.LENGTH_LONG).show()
-                        // Send recognized text to new activity
-                        sendText(recognizedText)
+                        Log.d("TAG", visionText.text)
+                        // Parse the text and send it to a new activity
+                        parseRecognizedText(visionText)
                     }
                     .addOnCompleteListener {
                         imageProxy.close()
@@ -161,6 +159,22 @@ class MainActivity : AppCompatActivity() {
                         Log.e(TAG, "MLKit text recognition failed", e)
                     }
         }
+    }
+
+    private fun parseRecognizedText(visionText : Text) {
+        val recognizedText = visionText.text
+
+        // Testing code to see how information is separated in the vision model
+        for (block in visionText.textBlocks) {
+            Log.d(TAG, "BLOCK: " + block.text)
+            for (line in block.lines) {
+                Log.d(TAG, "LINE: " + line.text)
+                for (element in line.elements) {
+                    Log.d(TAG, "ELEMENT: " + element.text)
+                }
+            }
+        }
+        sendText(recognizedText)
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -204,7 +218,6 @@ class MainActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
-
 
     companion object {
         private const val TAG = "CameraXBasic"
