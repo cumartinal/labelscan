@@ -1,5 +1,6 @@
 package com.cumartinal.labelscan
 
+import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
@@ -15,23 +16,28 @@ class DisplayTextActivity : AppCompatActivity() {
 
         // Get the Intent that started this activity and extract the string
         val message = intent.getStringExtra(EXTRA_MESSAGE)
+        @Suppress("UNCHECKED_CAST")
+        val nutritionMap: HashMap<String, Int>? = intent.getSerializableExtra("hashMap") as? HashMap<String, Int>
 
         // Capture the layout's TextView and set the string as its text
         val textView = findViewById<TextView>(R.id.textViewRecognized).apply {
             text = message
         }
+
+        if (nutritionMap != null) {
+            nutritionMap.forEach { (key, value) -> Log.d(TAG, "$key : $value") }
+        }
     }
 
-    // Override function of back button to avoid softlocking on dialog
-    // Temporal solution, TODO
-    override fun onBackPressed() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-    }
+
 
     // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan (view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    companion object {
+        private const val TAG = "DetailedScreen"
     }
 }

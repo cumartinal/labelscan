@@ -41,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
+    private lateinit var analysisProgressDialog: AlertDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -59,15 +61,18 @@ class MainActivity : AppCompatActivity() {
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        analysisProgressDialog = MaterialAlertDialogBuilder(this@MainActivity)
+                .setTitle("Analysing label")
+                .setMessage("Please wait...")
+                .setCancelable(false)
+                .create()
     }
 
     private fun takePhoto() {
         // Create alert
-        MaterialAlertDialogBuilder(this@MainActivity)
-                .setTitle("Analysing label")
-                .setMessage("Please wait...")
-                .setCancelable(false)
-                .show()
+        analysisProgressDialog.show()
+
         // Show progress indicator
         image_analysis_progress_indicator.show()
 
@@ -241,9 +246,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Log.d(TAG, "TESTTESTTEST. Saturated fat = " + nutritionMap["satfat"].toString() + "g")
-        nutritionMap.forEach { (key, value) -> Log.d(TAG, "$key : $value") }
-        sendText(recognizedText, nutritionMap)
+        // Check if we have extracted nutritional information or not, and act accordingly
+        if (recognizedText.isNotEmpty() && nutritionMap.isNotEmpty()) {
+            image_analysis_progress_indicator.hide()
+            analysisProgressDialog.cancel()
+            sendText(recognizedText, nutritionMap)
+        } else {
+            image_analysis_progress_indicator.hide()
+            MaterialAlertDialogBuilder(this@MainActivity)
+                    .setTitle("Analysis failed!")
+                    .setMessage("There was no nutritional information in the image." +
+                            "\nPlease try again")
+                    .setPositiveButton("OK") { dialog, which ->
+                        // No need to do anything special, just close the dialog
+                    }
+                    .show()
+            // Done last to avoid weird moment with no dialog
+            analysisProgressDialog.cancel()
+        }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -284,6 +304,7 @@ class MainActivity : AppCompatActivity() {
     private fun sendText(message : String, nutritionMap: HashMap<String, Int>) {
         val intent = Intent(this, DisplayTextActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, message)
+            putExtra("hashMap", nutritionMap)
         }
         startActivity(intent)
     }
