@@ -30,6 +30,8 @@ import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
+import kotlin.collections.HashMap
+
 typealias LumaListener = (luma: Double) -> Unit
 const val EXTRA_MESSAGE = "com.cumartinal.LabelScan.TEXT"
 
@@ -164,17 +166,84 @@ class MainActivity : AppCompatActivity() {
     private fun parseRecognizedText(visionText : Text) {
         val recognizedText = visionText.text
 
+        // Create map that will hold all the nutritional information
+        // Possible values include: kcal, totfat, satfat, trafat
+        // cholesterol, sodium, totcarbs, fiber, sugars, protein
+        val nutritionMap = hashMapOf<String, Int>()
+
         // Testing code to see how information is separated in the vision model
         for (block in visionText.textBlocks) {
-            Log.d(TAG, "BLOCK: " + block.text)
             for (line in block.lines) {
-                Log.d(TAG, "LINE: " + line.text)
-                for (element in line.elements) {
-                    Log.d(TAG, "ELEMENT: " + element.text)
+
+                if (line.text.contains("Total Fat")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                           nutritionMap["totfat"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
                 }
+
+                if (line.text.contains("Saturated Fat")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["satfat"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Trans Fat")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["trafat"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Cholesterol")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["cholesterol"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Sodium")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["sodium"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Total Carbohydrate")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["totcarbs"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Fiber")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["fiber"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Total Sugars")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["sugars"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Protein")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["protein"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
             }
         }
-        sendText(recognizedText)
+
+        // Log.d(TAG, "TESTTESTTEST. Saturated fat = " + nutritionMap["satfat"].toString() + "g")
+        nutritionMap.forEach { (key, value) -> Log.d(TAG, "$key : $value") }
+        sendText(recognizedText, nutritionMap)
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -212,7 +281,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Go to DisplayTextActivity to show recognized text
-    private fun sendText(message : String) {
+    private fun sendText(message : String, nutritionMap: HashMap<String, Int>) {
         val intent = Intent(this, DisplayTextActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, message)
         }
