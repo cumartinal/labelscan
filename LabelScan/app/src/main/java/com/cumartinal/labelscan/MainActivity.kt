@@ -3,7 +3,6 @@ package com.cumartinal.labelscan
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -172,32 +171,44 @@ class MainActivity : AppCompatActivity() {
         val recognizedText = visionText.text
 
         // Create map that will hold all the nutritional information
-        // Possible values include: kcal, totfat, satfat, trafat
-        // cholesterol, sodium, totcarbs, fiber, sugars, protein
+        // Possible values include: kcal, totFat, satFat, traFat
+        // cholesterol, sodium, totCarbs, fiber, sugars, protein
+        // vitD, calcium, iron, potassium
         val nutritionMap = hashMapOf<String, Int>()
 
-        // Testing code to see how information is separated in the vision model
-        for (block in visionText.textBlocks) {
+        println("ARRAY SIZE IS " + visionText.textBlocks.size)
+
+        for ((index,block) in visionText.textBlocks.withIndex()) {
             for (line in block.lines) {
+
+                // The kcal amount is recognized in the following/previous block from
+                // from the "Calories" block, so text recognition here is different
+                // The previous and following blocks are checked to see if they have the value
+                if (line.text.contains("Calories")) {
+                    if (visionText.textBlocks[index+1].text.any {it.isDigit()})
+                        nutritionMap["calories"] = (visionText.textBlocks[index+1].text.filter { it.isDigit() }).toInt()
+                    else if (visionText.textBlocks[index-1].text.any {it.isDigit()})
+                        nutritionMap["calories"] = (visionText.textBlocks[index-1].text.filter { it.isDigit() }).toInt()
+                }
 
                 if (line.text.contains("Total Fat")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                           nutritionMap["totfat"] = (element.text.filter { it.isDigit() }).toInt()
+                           nutritionMap["totFat"] = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Saturated Fat")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["satfat"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionMap["satFat"] = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Trans Fat")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["trafat"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionMap["traFat"] = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
@@ -218,7 +229,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Total Carbohydrate")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["totcarbs"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionMap["totCarbs"] = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
@@ -243,6 +254,33 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
+                if (line.text.contains("Vitamin D")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["vitD"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Calcium")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["calcium"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Iron")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["iron"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
+
+                if (line.text.contains("Potassium")) {
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() })
+                            nutritionMap["potassium"] = (element.text.filter { it.isDigit() }).toInt()
+                    }
+                }
             }
         }
 
