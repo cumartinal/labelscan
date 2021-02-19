@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 class DisplayTextActivity : AppCompatActivity() {
 
@@ -26,6 +27,10 @@ class DisplayTextActivity : AppCompatActivity() {
 
         if (nutritionMap != null) {
             nutritionMap.forEach { (key, value) -> Log.d(TAG, "$key : $value") }
+        }
+
+        val nutrientView = findViewById<RecyclerView>(R.id.nutrientRecyclerView).apply {
+
         }
     }
 
