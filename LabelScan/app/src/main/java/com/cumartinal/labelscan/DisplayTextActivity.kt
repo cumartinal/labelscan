@@ -7,9 +7,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_display_text.*
 
 class DisplayTextActivity : AppCompatActivity() {
+
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var adapter: RecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +26,13 @@ class DisplayTextActivity : AppCompatActivity() {
         @Suppress("UNCHECKED_CAST")
         val nutritionMap: HashMap<String, Int>? = intent.getSerializableExtra("hashMap") as? HashMap<String, Int>
 
-        // Capture the layout's TextView and set the string as its text
-        val textView = findViewById<TextView>(R.id.textViewRecognized).apply {
-            text = message
-        }
+        // Set up recycler view
+        linearLayoutManager = LinearLayoutManager(this)
+        nutrientRecyclerView.layoutManager = linearLayoutManager
+
+        // Set up adapter for recyclerview
+        adapter = RecyclerAdapter(nutritionMap)
+        nutrientRecyclerView.adapter = adapter
 
         if (nutritionMap != null) {
             nutritionMap.forEach { (key, value) -> Log.d(TAG, "$key : $value") }
