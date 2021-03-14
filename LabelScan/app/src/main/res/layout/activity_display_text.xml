@@ -12,12 +12,27 @@
         android:padding="16dp"
         tools:context=".DisplayTextActivity">
 
+        <TextView
+            android:id="@+id/newScanTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/dmsans_medium"
+            android:text="@string/new_scan"
+            android:textSize="21sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
             android:layout_marginBottom="56dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="16dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newScanTextView">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,6 +66,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/scan_extended_fab_content_desc"
+        android:fontFamily="@font/notosans_jp_medium"
         android:onClick="newScan"
         android:text="@string/string_scan_extended_fab"
         app:fabCustomSize="75dp"

@@ -170,13 +170,12 @@ class MainActivity : AppCompatActivity() {
     private fun parseRecognizedText(visionText : Text) {
         val recognizedText = visionText.text
 
-        // Create map that will hold all the nutritional information
+        // Create array that will hold all the nutritional information
         // Possible values include: kcal, totFat, satFat, traFat
         // cholesterol, sodium, totCarbs, fiber, sugars, protein
         // vitD, calcium, iron, potassium
-        val nutritionMap = hashMapOf<String, Int>()
 
-        println("ARRAY SIZE IS " + visionText.textBlocks.size)
+        val nutritionArray = IntArray(14) {i -> 0}
 
         for ((index,block) in visionText.textBlocks.withIndex()) {
             for (line in block.lines) {
@@ -186,109 +185,109 @@ class MainActivity : AppCompatActivity() {
                 // The previous and following blocks are checked to see if they have the value
                 if (line.text.contains("Calories")) {
                     if (visionText.textBlocks[index+1].text.any {it.isDigit()})
-                        nutritionMap["calories"] = (visionText.textBlocks[index+1].text.filter { it.isDigit() }).toInt()
+                        nutritionArray[0] = (visionText.textBlocks[index+1].text.filter { it.isDigit() }).toInt()
                     else if (visionText.textBlocks[index-1].text.any {it.isDigit()})
-                        nutritionMap["calories"] = (visionText.textBlocks[index-1].text.filter { it.isDigit() }).toInt()
+                        nutritionArray[0] = (visionText.textBlocks[index-1].text.filter { it.isDigit() }).toInt()
                 }
 
                 if (line.text.contains("Total Fat")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                           nutritionMap["totFat"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[1]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Saturated Fat")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["satFat"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[2]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Trans Fat")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["traFat"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[3]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Cholesterol")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["cholesterol"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[4]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Sodium")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["sodium"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[5]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Total Carbohydrate")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["totCarbs"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[6]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Fiber")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["fiber"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[7]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Total Sugars")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["sugars"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[8]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Protein")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["protein"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[9]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Vitamin D")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["vitD"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[10]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Calcium")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["calcium"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[11]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Iron")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["iron"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[12] = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
 
                 if (line.text.contains("Potassium")) {
                     for (element in line.elements) {
                         if (element.text.any { it.isDigit() })
-                            nutritionMap["potassium"] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[13]  = (element.text.filter { it.isDigit() }).toInt()
                     }
                 }
             }
         }
 
         // Check if we have extracted nutritional information or not, and act accordingly
-        if (recognizedText.isNotEmpty() && nutritionMap.isNotEmpty()) {
+        if (recognizedText.isNotEmpty() && nutritionArray.isNotEmpty()) {
             image_analysis_progress_indicator.hide()
             analysisProgressDialog.cancel()
-            sendText(recognizedText, nutritionMap)
+            sendText(recognizedText, nutritionArray)
         } else {
             image_analysis_progress_indicator.hide()
             MaterialAlertDialogBuilder(this@MainActivity)
@@ -339,10 +338,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Go to DisplayTextActivity to show recognized text
-    private fun sendText(message : String, nutritionMap: HashMap<String, Int>) {
+    private fun sendText(message : String, nutritionArray: IntArray) {
         val intent = Intent(this, DisplayTextActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, message)
-            putExtra("hashMap", nutritionMap)
+            putExtra("intArray", nutritionArray)
         }
         startActivity(intent)
     }

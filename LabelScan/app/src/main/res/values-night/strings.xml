@@ -6,4 +6,5 @@
     <string name="string_scan_extended_fab">Scan</string>
     <string name="scan_extended_fab_content_desc">Scan new image</string>
     <string name="progress_indicator_desc">Image analysis progress indicator</string>
+    <string name="new_scan">New Scan</string>
 </resources>

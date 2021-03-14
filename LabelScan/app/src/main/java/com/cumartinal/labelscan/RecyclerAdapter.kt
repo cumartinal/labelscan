@@ -6,14 +6,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerAdapter(private val nutritionMap: HashMap<String, Int>?) :
+class RecyclerAdapter(private val nutritionArray: IntArray) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    // Transform HashMap into Arrays
-    // I should not be doing this, maybe make it from the start arrays???
-
-    val keyList = ArrayList(nutritionMap?.keys)
-    val valueList = ArrayList(nutritionMap?.values)
+    // Make Array with names of nutrients
+    // Possible values include: kcal, totFat, satFat, traFat
+    // cholesterol, sodium, totCarbs, fiber, sugars, protein
+    // vitD, calcium, iron, potassium
+    val nutrientNames = arrayOf("Calories", "Total fat", "Saturated fat", "Trans fat",
+                                "Cholesterol", "Sodium", "Total carbohydrates", "Fiber",
+                                "Sugars", "Protein", "Vitamin D", "Calcium", "Iron",
+                                "Potassium")
+    // Make array with units of nutrients
+    val nutrientUnits = arrayOf("kcal","g", "g", "g", "mg", "mg", "g", "g", "g", "g",
+                                "mcg", "mg", "mg", "mg")
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nutrientTextView: TextView
@@ -35,16 +41,16 @@ class RecyclerAdapter(private val nutritionMap: HashMap<String, Int>?) :
 
     // Replace the contents of a view invoked by the layout manager
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        if (nutritionMap != null) {
-            viewHolder.nutrientTextView.text = keyList.get(position)
-            viewHolder.valueTextView.text = valueList.get(position).toString()
+        if (nutritionArray != null) {
+            viewHolder.nutrientTextView.text = nutrientNames.get(position)
+            viewHolder.valueTextView.text = nutritionArray.get(position).toString()  + nutrientUnits.get(position)
         }
 
     }
 
     override fun getItemCount(): Int {
-        if (nutritionMap != null) {
-            return nutritionMap.size
+        if (nutritionArray != null) {
+            return nutritionArray.size
         } else {
             return 0
         }
