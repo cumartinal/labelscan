@@ -164,6 +164,7 @@ class MainActivity : AppCompatActivity() {
                         // Task failed with an exception
                         Log.e(TAG, "MLKit text recognition failed", e)
                     }
+
         }
     }
 
@@ -174,8 +175,8 @@ class MainActivity : AppCompatActivity() {
         // Possible values include: kcal, totFat, satFat, traFat
         // cholesterol, sodium, totCarbs, fiber, sugars, protein
         // vitD, calcium, iron, potassium
-
         val nutritionArray = IntArray(14) {i -> 0}
+        var hasNutritionalInformation = false
 
         for ((index,block) in visionText.textBlocks.withIndex()) {
             for (line in block.lines) {
@@ -184,107 +185,136 @@ class MainActivity : AppCompatActivity() {
                 // from the "Calories" block, so text recognition here is different
                 // The previous and following blocks are checked to see if they have the value
                 if (line.text.contains("Calories")) {
-                    if (visionText.textBlocks[index+1].text.any {it.isDigit()})
-                        nutritionArray[0] = (visionText.textBlocks[index+1].text.filter { it.isDigit() }).toInt()
-                    else if (visionText.textBlocks[index-1].text.any {it.isDigit()})
-                        nutritionArray[0] = (visionText.textBlocks[index-1].text.filter { it.isDigit() }).toInt()
+                    if (visionText.textBlocks[index+1].text.any {it.isDigit()}) {
+                        nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).toInt()
+                        hasNutritionalInformation = true
+                    } else if (visionText.textBlocks[index-1].text.any {it.isDigit()}) {
+                        nutritionArray[0] = (visionText.textBlocks[index - 1].text.filter { it.isDigit() }).toInt()
+                        hasNutritionalInformation = true
+                    }
                 }
 
                 if (line.text.contains("Total Fat")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[1]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[1] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Saturated Fat")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[2]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[2] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Trans Fat")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[3]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[3] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Cholesterol")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[4]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[4] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Sodium")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[5]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[5] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Total Carbohydrate")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[6]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[6] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Fiber")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[7]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[7] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Total Sugars")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[8]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[8] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Protein")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[9]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[9] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Vitamin D")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[10]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[10] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Calcium")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
+                        if (element.text.any { it.isDigit() }) {
                             nutritionArray[11]  = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Iron")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
+                        if (element.text.any { it.isDigit() }) {
                             nutritionArray[12] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
                 if (line.text.contains("Potassium")) {
                     for (element in line.elements) {
-                        if (element.text.any { it.isDigit() })
-                            nutritionArray[13]  = (element.text.filter { it.isDigit() }).toInt()
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[13] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
             }
         }
 
         // Check if we have extracted nutritional information or not, and act accordingly
-        if (recognizedText.isNotEmpty() && nutritionArray.isNotEmpty()) {
+        if (hasNutritionalInformation) {
             image_analysis_progress_indicator.hide()
             analysisProgressDialog.cancel()
             sendText(recognizedText, nutritionArray)
