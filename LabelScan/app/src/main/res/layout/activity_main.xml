@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -33,7 +34,6 @@
             app:layout_constraintTop_toTopOf="@+id/viewFinder"
             app:srcCompat="@drawable/ic_camera_frame" />
 
-        <!-- Does not display on device, TODO -->
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
             android:layout_marginTop="24dp"
             android:fontFamily="@font/dmsans_medium"
             android:textSize="15sp"
-            android:text="Scan a label"
+            android:text="@string/scan_a_label"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/camera_frame"
             app:layout_constraintEnd_toEndOf="@+id/camera_frame"
@@ -55,24 +55,41 @@
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="75dp"
         android:layout_gravity="bottom"
-        android:importantForAccessibility="no"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        />
+        android:minHeight="75dp"
+        app:fabCradleMargin="10dp"
+        app:fabCradleRoundedCornerRadius="10dp"
+        app:fabCradleVerticalOffset="10dp"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
+
+        <!-- This is not an active view so colours are toned down -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+            android:id="@+id/bottom_navigation_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            app:elevation="0dp"
+            android:background="@android:color/transparent"
+            app:menu="@menu/bottom_navigation_menu" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/camera_capture_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/string_scan_fab"
+        app:maxImageSize="32dp"
         app:fabCustomSize="75dp"
         app:layout_anchor="@id/bottomAppBar"
-        app:maxImageSize="32dp"
+        app:layout_anchorGravity="center_horizontal"
         app:srcCompat="@drawable/baseline_camera_alt_24" />
 
     <!-- Linear progress indicator -->
+
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/image_analysis_progress_indicator"
         android:layout_width="match_parent"

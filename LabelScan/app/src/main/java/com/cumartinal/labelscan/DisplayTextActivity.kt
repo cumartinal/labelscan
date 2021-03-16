@@ -8,7 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_display_text.*
+import kotlinx.android.synthetic.main.activity_display_text.bottom_navigation_main
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class DisplayTextActivity : AppCompatActivity() {
@@ -35,6 +38,24 @@ class DisplayTextActivity : AppCompatActivity() {
 
         // Add dividers between items on recyclerview
         nutrientRecyclerView.addItemDecoration(DividerItemDecoration(nutrientRecyclerView.getContext(), linearLayoutManager.getOrientation()))
+
+        // Set up bottom navigation
+        bottom_navigation_main.selectedItemId = R.id.placeholder
+        bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.favoritesItem -> {
+                    val contextView = findViewById<View>(R.id.bottom_navigation_main)
+                    Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates", Snackbar.LENGTH_LONG)
+                            .setAnchorView(scan_extended_fab)
+                            .show()
+                    false
+                }
+                R.id.settingsItem -> {
+                    true
+                }
+                else -> false
+            }
+        }
 
         val nutrientView = findViewById<RecyclerView>(R.id.nutrientRecyclerView).apply {
 

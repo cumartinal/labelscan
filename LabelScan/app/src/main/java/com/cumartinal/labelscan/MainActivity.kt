@@ -17,8 +17,10 @@ import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -56,6 +58,26 @@ class MainActivity : AppCompatActivity() {
 
         // Set up the listener for take photo button
         camera_capture_button.setOnClickListener { takePhoto() }
+
+        // Set up bottom navigation and its listener
+        bottom_navigation_main.selectedItemId = R.id.placeholder
+
+        bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.favoritesItem -> {
+                    val contextView = findViewById<View>(R.id.bottom_navigation_main)
+                    Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates", Snackbar.LENGTH_LONG)
+                            .setAnchorView(camera_capture_button)
+                            .show()
+                    false
+                }
+                R.id.settingsItem -> {
+
+                    true
+                }
+                else -> false
+            }
+        }
 
         outputDirectory = getOutputDirectory()
 
@@ -374,6 +396,11 @@ class MainActivity : AppCompatActivity() {
             putExtra("intArray", nutritionArray)
         }
         startActivity(intent)
+    }
+
+    // Go to settings, TODO
+    private fun openSettings() {
+        return
     }
 
     companion object {

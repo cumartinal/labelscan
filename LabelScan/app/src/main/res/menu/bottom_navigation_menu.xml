@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/settingsItem"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings_24dp"
+        android:title="@string/text_label_1"/>
+    <item
+        android:id="@+id/placeholder"
+        android:enabled="true"
+        android:title="" />
+    <item
+        android:id="@+id/favoritesItem"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite_24dp"
+        android:title="@string/text_label_2"/>
+</menu>
