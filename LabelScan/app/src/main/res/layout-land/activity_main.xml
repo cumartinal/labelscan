@@ -53,23 +53,39 @@
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:importantForAccessibility="no"
-        android:minHeight="50dp" />
+        android:layout_gravity="bottom"
+        android:minHeight="75dp"
+        app:fabCradleMargin="10dp"
+        app:fabCradleRoundedCornerRadius="10dp"
+        app:fabCradleVerticalOffset="10dp"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
+
+        <!-- This is not an active view so colours are toned down -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+            android:id="@+id/bottom_navigation_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            app:elevation="0dp"
+            android:background="@android:color/transparent"
+            app:menu="@menu/bottom_navigation_menu" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/camera_capture_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="37.5dp"
         android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/string_scan_fab"
-        app:fabCustomSize="75dp"
         app:maxImageSize="32dp"
+        app:fabCustomSize="75dp"
         app:srcCompat="@drawable/baseline_camera_alt_24" />
 
     <!-- Linear progress indicator -->
