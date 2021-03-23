@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:minHeight="75dp"
+        app:fabCradleMargin="10dp"
+        app:fabCradleRoundedCornerRadius="10dp"
+        app:fabCradleVerticalOffset="10dp"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
+
+        <!-- This is not an active view so colours are toned down -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+            android:id="@+id/bottom_navigation_settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            app:itemIconTint="@color/custom_colorOnSurface"
+            app:itemTextColor="@color/custom_colorOnSurface"
+            app:elevation="0dp"
+            android:background="@android:color/transparent"
+            app:menu="@menu/bottom_navigation_menu" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/scan_extended_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/scan_extended_fab_content_desc"
+        android:fontFamily="@font/notosans_jp_medium"
+        android:onClick="newScan"
+        android:text="@string/string_scan_extended_fab"
+        app:fabCustomSize="75dp"
+        app:icon="@drawable/ic_plus_24px"
+        app:layout_anchor="@id/bottomAppBar"
+        app:maxImageSize="32dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
