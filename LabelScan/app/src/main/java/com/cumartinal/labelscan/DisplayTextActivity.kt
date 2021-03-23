@@ -51,6 +51,7 @@ class DisplayTextActivity : AppCompatActivity() {
                     false
                 }
                 R.id.settingsItem -> {
+                    openSettings()
                     true
                 }
                 else -> false
@@ -67,6 +68,12 @@ class DisplayTextActivity : AppCompatActivity() {
     // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan(view: View) {
         val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openSettings() {
+        val intent = Intent(this, SettingsActivity::class.java).apply {
+        }
         startActivity(intent)
     }
 

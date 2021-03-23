@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                     false
                 }
                 R.id.settingsItem -> {
-
+                    openSettings()
                     true
                 }
                 else -> false
@@ -398,9 +398,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    // Go to settings, TODO
+    // Go to settings
     private fun openSettings() {
-        return
+        val intent = Intent(this, SettingsActivity::class.java).apply {
+        }
+        startActivity(intent)
     }
 
     companion object {
