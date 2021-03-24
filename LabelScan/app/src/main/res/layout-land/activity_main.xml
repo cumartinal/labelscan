@@ -43,7 +43,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/dmsans_medium"
             android:textSize="15sp"
-            android:text="Scan a label"
+            android:text="@string/scan_a_label"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/camera_frame"
             app:layout_constraintStart_toStartOf="@+id/camera_frame"
