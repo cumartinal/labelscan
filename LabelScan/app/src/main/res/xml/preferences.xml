@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <Preference
+
+    <ListPreference
+        android:dialogTitle="Appearance"
+        android:entries="@array/list_preference_theming_entries"
+        android:entryValues="@array/list_preference_theming_entry_values"
+        android:icon="@drawable/ic_baseline_brush_24"
         app:key="theming"
-        app:title="Appearance"
-        app:summary="Customise themes and fonts"/>
+        app:summary="Choose app theme"
+        app:title="Appearance" />
+
 </PreferenceScreen>
 

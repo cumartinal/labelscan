@@ -9,4 +9,8 @@
     <string name="scan_a_label">Scan a label</string>
     <string name="text_label_1">Settings</string>
     <string name="text_label_2">Favourites</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="preference_option_theme_light">Light</string>
+    <string name="preference_option_theme_dark">Dark</string>
 </resources>
