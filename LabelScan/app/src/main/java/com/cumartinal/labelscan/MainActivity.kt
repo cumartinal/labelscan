@@ -3,8 +3,12 @@ package com.cumartinal.labelscan
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.provider.MediaStore.Images.Media.getBitmap
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -23,12 +27,14 @@ import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import java.nio.ByteBuffer
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
 typealias LumaListener = (luma: Double) -> Unit
+typealias FreezeListener = (freeze: Double) -> Unit
 const val EXTRA_MESSAGE = "com.cumartinal.LabelScan.TEXT"
 
 class MainActivity : AppCompatActivity() {
@@ -52,11 +58,16 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        // Set up the listener for take photo button, make it play sound, make it freeze preview
         val mediaPlayerCamera = MediaPlayer.create(this, R.raw.ui_camera_shutter)
-        // Set up the listener for take photo button, make it play sound
         camera_capture_button.setOnClickListener {
             mediaPlayerCamera.start()
             takePhoto()
+            val frozenBitmap = viewFinder.bitmap
+            frozen_view.setImageBitmap(frozenBitmap)
+            frozen_view.visibility = View.VISIBLE
+            viewFinder.visibility = View.INVISIBLE
+
         }
 
         // Set up bottom navigation and its listener
@@ -125,6 +136,7 @@ class MainActivity : AppCompatActivity() {
         imageCapture.takePicture(ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageCapturedCallback() {
                 override fun onCaptureSuccess(image: ImageProxy) {
+                    // Send to analysis
                     analyze(image)
                     super.onCaptureSuccess(image)
                 }
@@ -193,6 +205,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
+
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
@@ -205,10 +218,12 @@ class MainActivity : AppCompatActivity() {
     private fun analyze(imageProxy: ImageProxy) {
         val image = imageProxy.image
         if (image != null) {
+            // Obtain image object
             val image = InputImage.fromMediaImage(
                 image,
                 imageProxy.imageInfo.rotationDegrees
             )
+
             // Pass image to an ML Kit Vision API
             val recognizer = TextRecognition.getClient()
             val result = recognizer.process(image)
@@ -392,6 +407,8 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton("OK") { dialog, which ->
                         val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.navigation_hover_tap)
                         mediaPlayerNavigationScan.start()
+                        viewFinder.visibility = View.VISIBLE
+                        frozen_view.visibility = View.INVISIBLE
                     }
                     .show()
             // Done last to avoid weird moment with no dialog
