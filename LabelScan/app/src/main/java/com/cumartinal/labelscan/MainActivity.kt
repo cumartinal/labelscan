@@ -1,37 +1,31 @@
 package com.cumartinal.labelscan
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.renderscript.ScriptGroup
+import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import java.util.concurrent.Executors
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.camera.view.PreviewView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
-import java.io.IOException
-import java.nio.ByteBuffer
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
-import kotlin.collections.HashMap
+import java.util.concurrent.Executors
+
 
 typealias LumaListener = (luma: Double) -> Unit
 const val EXTRA_MESSAGE = "com.cumartinal.LabelScan.TEXT"
@@ -53,7 +47,8 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
         }
 
         // Set up the listener for take photo button
@@ -66,9 +61,13 @@ class MainActivity : AppCompatActivity() {
             when(item.itemId) {
                 R.id.favoritesItem -> {
                     val contextView = findViewById<View>(R.id.bottom_navigation_main)
-                    Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates", Snackbar.LENGTH_LONG)
-                            .setAnchorView(camera_capture_button)
-                            .show()
+                    Snackbar.make(
+                        contextView,
+                        "This feature is not yet implemented! Please wait for future updates",
+                        Snackbar.LENGTH_LONG
+                    )
+                        .setAnchorView(camera_capture_button)
+                        .show()
                     false
                 }
                 R.id.settingsItem -> {
@@ -115,16 +114,16 @@ class MainActivity : AppCompatActivity() {
         // Set up image capture listener, which is triggered after photo has
         // been taken
         imageCapture.takePicture(ContextCompat.getMainExecutor(this),
-                object : ImageCapture.OnImageCapturedCallback() {
-                    override fun onCaptureSuccess(image: ImageProxy) {
-                        analyze(image)
-                        super.onCaptureSuccess(image)
-                    }
+            object : ImageCapture.OnImageCapturedCallback() {
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    analyze(image)
+                    super.onCaptureSuccess(image)
+                }
 
-                    override fun onError(exc: ImageCaptureException) {
-                        Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                    }
-        })
+                override fun onError(exc: ImageCaptureException) {
+                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                }
+            })
     }
 
 
@@ -137,13 +136,13 @@ class MainActivity : AppCompatActivity() {
 
             // Preview
             val preview = Preview.Builder()
-                    .build()
-                    .also {
-                        it.setSurfaceProvider(viewFinder.createSurfaceProvider())
-                    }
+                .build()
+                .also {
+                    it.setSurfaceProvider(viewFinder.createSurfaceProvider())
+                }
 
             imageCapture = ImageCapture.Builder()
-                    .build()
+                .build()
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -153,10 +152,39 @@ class MainActivity : AppCompatActivity() {
                 cameraProvider.unbindAll()
 
                 // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview, imageCapture)
+                val camera = cameraProvider.bindToLifecycle(
+                    this, cameraSelector, preview, imageCapture
+                )
 
-            } catch(exc: Exception) {
+                val cameraControl = camera.cameraControl
+
+                // Code from https://proandroiddev.com/android-camerax-tap-to-focus-pinch-to-zoom-zoom-slider-eb88f3aa6fc6
+                // Listen to tap events on the viewfinder and set them as focus regions
+                viewFinder.setOnTouchListener(View.OnTouchListener setOnTouchListener@{ view: View, motionEvent: MotionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> return@setOnTouchListener true
+                        MotionEvent.ACTION_UP -> {
+                            // Get the MeteringPointFactory from PreviewView
+                            val factory : MeteringPointFactory  = SurfaceOrientedMeteringPointFactory(
+                                viewFinder.width.toFloat(), viewFinder.height.toFloat())
+
+                            // Create a MeteringPoint from the tap coordinates
+                            val point = factory.createPoint(motionEvent.x, motionEvent.y)
+
+                            // Create a MeteringAction from the MeteringPoint, you can configure it to specify the metering mode
+                            val action = FocusMeteringAction.Builder(point).build()
+
+                            // Trigger the focus and metering. The method returns a ListenableFuture since the operation
+                            // is asynchronous. You can use it get notified when the focus is successful or if it fails.
+                            cameraControl.startFocusAndMetering(action)
+
+                            return@setOnTouchListener true
+                        }
+                        else -> return@setOnTouchListener false
+                    }
+                })
+
+            } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
@@ -168,8 +196,10 @@ class MainActivity : AppCompatActivity() {
     private fun analyze(imageProxy: ImageProxy) {
         val image = imageProxy.image
         if (image != null) {
-            val image = InputImage.fromMediaImage(image,
-                    imageProxy.imageInfo.rotationDegrees)
+            val image = InputImage.fromMediaImage(
+                image,
+                imageProxy.imageInfo.rotationDegrees
+            )
             // Pass image to an ML Kit Vision API
             val recognizer = TextRecognition.getClient()
             val result = recognizer.process(image)
@@ -190,27 +220,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun parseRecognizedText(visionText : Text) {
+    private fun parseRecognizedText(visionText: Text) {
         val recognizedText = visionText.text
 
         // Create array that will hold all the nutritional information
         // Possible values include: kcal, totFat, satFat, traFat
         // cholesterol, sodium, totCarbs, fiber, sugars, protein
         // vitD, calcium, iron, potassium
-        val nutritionArray = IntArray(14) {i -> 0}
+        val nutritionArray = IntArray(14) { i -> 0}
         var hasNutritionalInformation = false
 
-        for ((index,block) in visionText.textBlocks.withIndex()) {
+        for ((index, block) in visionText.textBlocks.withIndex()) {
             for (line in block.lines) {
 
                 // The kcal amount is recognized in the following/previous block from
                 // from the "Calories" block, so text recognition here is different
                 // The previous and following blocks are checked to see if they have the value
                 if (line.text.contains("Calories")) {
-                    if (visionText.textBlocks[index+1].text.any {it.isDigit()}) {
+                    if (visionText.textBlocks[index + 1].text.any {it.isDigit()}) {
                         nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).toInt()
                         hasNutritionalInformation = true
-                    } else if (visionText.textBlocks[index-1].text.any {it.isDigit()}) {
+                    } else if (visionText.textBlocks[index - 1].text.any {it.isDigit()}) {
                         nutritionArray[0] = (visionText.textBlocks[index - 1].text.filter { it.isDigit() }).toInt()
                         hasNutritionalInformation = true
                     }
@@ -344,8 +374,10 @@ class MainActivity : AppCompatActivity() {
             image_analysis_progress_indicator.hide()
             MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle("Analysis failed!")
-                    .setMessage("There was no nutritional information in the image." +
-                            "\nPlease try again")
+                    .setMessage(
+                        "There was no nutritional information in the image." +
+                                "\nPlease try again"
+                    )
                     .setPositiveButton("OK") { dialog, which ->
                         // No need to do anything special, just close the dialog
                     }
@@ -357,7 +389,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-                baseContext, it) == PackageManager.PERMISSION_GRANTED
+            baseContext, it
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     // Not needed for now, possibly needed in the future if user's want
@@ -375,22 +408,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int, permissions: Array<String>, grantResults:
-            IntArray) {
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
-                Toast.makeText(this,
-                        "Permissions not granted by the user.",
-                        Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Permissions not granted by the user.",
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish()
             }
         }
     }
 
     // Go to DisplayTextActivity to show recognized text
-    private fun sendText(message : String, nutritionArray: IntArray) {
+    private fun sendText(message: String, nutritionArray: IntArray) {
         val intent = Intent(this, DisplayTextActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, message)
             putExtra("intArray", nutritionArray)
