@@ -1,6 +1,7 @@
 package com.cumartinal.labelscan
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -48,9 +49,13 @@ class DisplayTextActivity : AppCompatActivity() {
                     Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates", Snackbar.LENGTH_LONG)
                             .setAnchorView(scan_extended_fab)
                             .show()
+                    val mediaPlayerNavigationFav = MediaPlayer.create(this, R.raw.ui_tap_03)
+                    mediaPlayerNavigationFav.start()
                     false
                 }
                 R.id.settingsItem -> {
+                    val mediaPlayerNavigationSet = MediaPlayer.create(this, R.raw.ui_tap_01)
+                    mediaPlayerNavigationSet.start()
                     openSettings()
                     true
                 }
@@ -67,6 +72,8 @@ class DisplayTextActivity : AppCompatActivity() {
 
     // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan(view: View) {
+        val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.ui_tap_02)
+        mediaPlayerNavigationScan.start()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

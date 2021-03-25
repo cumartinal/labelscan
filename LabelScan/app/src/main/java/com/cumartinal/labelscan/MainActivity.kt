@@ -3,6 +3,7 @@ package com.cumartinal.labelscan
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -51,8 +52,12 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        // Set up the listener for take photo button
-        camera_capture_button.setOnClickListener { takePhoto() }
+        val mediaPlayerCamera = MediaPlayer.create(this, R.raw.ui_camera_shutter)
+        // Set up the listener for take photo button, make it play sound
+        camera_capture_button.setOnClickListener {
+            mediaPlayerCamera.start()
+            takePhoto()
+        }
 
         // Set up bottom navigation and its listener
         bottom_navigation_main.selectedItemId = R.id.placeholder
@@ -68,9 +73,13 @@ class MainActivity : AppCompatActivity() {
                     )
                         .setAnchorView(camera_capture_button)
                         .show()
+                    val mediaPlayerNavigationFav = MediaPlayer.create(this, R.raw.ui_tap_03)
+                    mediaPlayerNavigationFav.start()
                     false
                 }
                 R.id.settingsItem -> {
+                    val mediaPlayerNavigationSet = MediaPlayer.create(this, R.raw.ui_tap_01)
+                    mediaPlayerNavigationSet.start()
                     openSettings()
                     true
                 }
@@ -372,6 +381,8 @@ class MainActivity : AppCompatActivity() {
             sendText(recognizedText, nutritionArray)
         } else {
             image_analysis_progress_indicator.hide()
+            val mediaPlayerError = MediaPlayer.create(this, R.raw.alert_error)
+            mediaPlayerError.start()
             MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle("Analysis failed!")
                     .setMessage(
@@ -379,7 +390,8 @@ class MainActivity : AppCompatActivity() {
                                 "\nPlease try again"
                     )
                     .setPositiveButton("OK") { dialog, which ->
-                        // No need to do anything special, just close the dialog
+                        val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.navigation_hover_tap)
+                        mediaPlayerNavigationScan.start()
                     }
                     .show()
             // Done last to avoid weird moment with no dialog

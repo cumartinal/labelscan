@@ -1,6 +1,7 @@
 package com.cumartinal.labelscan
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -61,6 +62,8 @@ class SettingsActivity : AppCompatActivity(),
 
     // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan(view: View) {
+        val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.ui_tap_02)
+        mediaPlayerNavigationScan.start()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
