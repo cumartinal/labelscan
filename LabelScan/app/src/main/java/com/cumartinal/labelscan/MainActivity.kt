@@ -461,6 +461,7 @@ class MainActivity : AppCompatActivity() {
             putExtra("intArray", nutritionArray)
         }
         startActivity(intent)
+
     }
 
     // Go to settings

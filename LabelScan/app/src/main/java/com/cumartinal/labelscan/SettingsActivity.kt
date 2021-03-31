@@ -9,9 +9,10 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_display_text.*
-import kotlinx.android.synthetic.main.activity_display_text.scan_extended_fab
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_settings.scan_extended_fab
 import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.activity_settings.bottom_navigation_main
+
 
 class SettingsActivity : AppCompatActivity(),
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
@@ -19,21 +20,15 @@ class SettingsActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_settings)
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings_container, MySettingsFragment())
-                .commit()
-
         // Set up bottom navigation and its listener
-        bottom_navigation_settings.selectedItemId = R.id.settingsItem
-
-        bottom_navigation_settings.setOnNavigationItemSelectedListener { item ->
+        bottom_navigation_main.selectedItemId = R.id.settingsItem
+        bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {
-                    val contextView = findViewById<View>(R.id.bottom_navigation_settings)
+                    val contextView = findViewById<View>(R.id.bottom_navigation_main)
                     Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates", Snackbar.LENGTH_LONG)
-                            .setAnchorView(scan_extended_fab)
-                            .show()
+                        .setAnchorView(scan_extended_fab)
+                        .show()
                     false
                 }
                 R.id.settingsItem -> {
@@ -42,6 +37,12 @@ class SettingsActivity : AppCompatActivity(),
                 else -> false
             }
         }
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.settings_container, MySettingsFragment())
+                .commit()
+
     }
 
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, pref: Preference): Boolean {

@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_display_text.*
-import kotlinx.android.synthetic.main.activity_display_text.bottom_navigation_main
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class DisplayTextActivity : AppCompatActivity() {
@@ -68,7 +66,12 @@ class DisplayTextActivity : AppCompatActivity() {
         }
     }
 
-
+    // Make it so new startActivity activity is created so the Preview isn't frozen
+    override fun onBackPressed() {
+        Log.d("CDA", "onBackPressed Called")
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
 
     // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan(view: View) {

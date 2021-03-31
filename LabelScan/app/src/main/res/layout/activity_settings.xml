@@ -20,7 +20,7 @@
         <!-- This is not an active view so colours are toned down -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-            android:id="@+id/bottom_navigation_settings"
+            android:id="@+id/bottom_navigation_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
