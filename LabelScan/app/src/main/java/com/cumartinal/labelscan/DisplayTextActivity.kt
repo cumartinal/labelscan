@@ -66,19 +66,13 @@ class DisplayTextActivity : AppCompatActivity() {
         }
     }
 
-    // Make it so new startActivity activity is created so the Preview isn't frozen
-    override fun onBackPressed() {
-        Log.d("CDA", "onBackPressed Called")
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-    }
-
     // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan(view: View) {
         val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.ui_tap_02)
         mediaPlayerNavigationScan.start()
         val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivityIfNeeded(intent, 0)
     }
 
     private fun openSettings() {

@@ -25,7 +25,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
+import kotlinx.android.synthetic.main.activity_display_text.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.bottom_navigation_main
 import java.io.File
 import java.nio.ByteBuffer
 import java.util.*
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     private lateinit var analysisProgressDialog: AlertDialog
+
+    private var backPressedTimeStamp = 0.toLong()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +111,13 @@ class MainActivity : AppCompatActivity() {
                 .setMessage("Please wait...")
                 .setCancelable(false)
                 .create()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Avoid viewFinder being frozen after coming back from DisplayTextActivity
+        frozen_view.visibility = View.INVISIBLE
+        viewFinder.visibility = View.VISIBLE
     }
 
     private fun takePhoto() {
@@ -469,6 +480,22 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, SettingsActivity::class.java).apply {
         }
         startActivity(intent)
+    }
+
+    // Double tap back to exit
+    override fun onBackPressed() {
+        Log.d("CDA", "onBackPressed Called")
+        // Have we pressed the back button recently twice?
+        if (backPressedTimeStamp + 2500 > System.currentTimeMillis()) {
+            super.onBackPressed()
+            return
+        } else {
+            val contextView = findViewById<View>(R.id.bottom_navigation_main)
+            Snackbar.make(contextView, "Double tap back to exit", Snackbar.LENGTH_LONG)
+                    .setAnchorView(camera_capture_button)
+                    .show()
+        }
+        backPressedTimeStamp = System.currentTimeMillis()
     }
 
     companion object {
