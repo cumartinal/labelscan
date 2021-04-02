@@ -20,6 +20,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
@@ -485,17 +486,23 @@ class MainActivity : AppCompatActivity() {
     // Double tap back to exit
     override fun onBackPressed() {
         Log.d("CDA", "onBackPressed Called")
-        // Have we pressed the back button recently twice?
-        if (backPressedTimeStamp + 2500 > System.currentTimeMillis()) {
-            super.onBackPressed()
-            return
+        // Have we enabled double tap?
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+        if (sharedPreferences.getBoolean("doubleTapExit", false)) {
+            // Have we pressed the back button recently twice?
+            if (backPressedTimeStamp + 2500 > System.currentTimeMillis()) {
+                super.onBackPressed()
+                return
+            } else {
+                val contextView = findViewById<View>(R.id.bottom_navigation_main)
+                Snackbar.make(contextView, "Double tap back to exit", Snackbar.LENGTH_LONG)
+                        .setAnchorView(camera_capture_button)
+                        .show()
+            }
+            backPressedTimeStamp = System.currentTimeMillis()
         } else {
-            val contextView = findViewById<View>(R.id.bottom_navigation_main)
-            Snackbar.make(contextView, "Double tap back to exit", Snackbar.LENGTH_LONG)
-                    .setAnchorView(camera_capture_button)
-                    .show()
+            super.onBackPressed()
         }
-        backPressedTimeStamp = System.currentTimeMillis()
     }
 
     companion object {

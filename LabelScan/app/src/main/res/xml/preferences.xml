@@ -11,5 +11,12 @@
         app:summary="Choose app theme"
         app:title="Appearance" />
 
+    <SwitchPreference
+        android:key="doubleTapExit"
+        android:title="Double tap back to exit app"
+        android:defaultValue="false"
+        android:icon="@drawable/ic_door_front"
+        />
+
 </PreferenceScreen>
 
