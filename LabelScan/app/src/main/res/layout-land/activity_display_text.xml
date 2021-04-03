@@ -13,20 +13,20 @@
 
         <TextView
             android:id="@+id/newScanTextView"
+            style="@style/TextAppearance.MdcTypographyStyles.Headline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/dmsans_bold"
             android:text="@string/new_scan"
-            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="72dp"
             android:layout_marginBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newScanTextView"
@@ -57,7 +57,8 @@
         app:fabCradleMargin="10dp"
         app:fabCradleRoundedCornerRadius="10dp"
         app:fabCradleVerticalOffset="10dp"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        app:backgroundTint="@color/green_strong">
 
         <!-- This is not an active view so colours are toned down -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -78,7 +79,6 @@
         android:id="@+id/scan_extended_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
         android:contentDescription="@string/scan_extended_fab_content_desc"
         android:fontFamily="@font/notosans_jp_medium"
         android:onClick="newScan"

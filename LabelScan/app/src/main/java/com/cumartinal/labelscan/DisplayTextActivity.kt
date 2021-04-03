@@ -36,7 +36,7 @@ class DisplayTextActivity : AppCompatActivity() {
         nutrientRecyclerView.adapter = adapter
 
         // Add dividers between items on recyclerview
-        nutrientRecyclerView.addItemDecoration(DividerItemDecoration(nutrientRecyclerView.getContext(), linearLayoutManager.getOrientation()))
+        nutrientRecyclerView.addItemDecoration(CustomDividerItemDecoration(nutrientRecyclerView.getContext(), linearLayoutManager.getOrientation()))
 
         // Set up bottom navigation
         bottom_navigation_main.selectedItemId = R.id.placeholder

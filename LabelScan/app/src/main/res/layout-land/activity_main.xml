@@ -69,7 +69,8 @@
         app:fabCradleMargin="10dp"
         app:fabCradleRoundedCornerRadius="10dp"
         app:fabCradleVerticalOffset="10dp"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        app:backgroundTint="@color/green_strong">
 
         <!-- This is not an active view so colours are toned down -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -95,6 +96,7 @@
         android:contentDescription="@string/string_scan_fab"
         app:maxImageSize="32dp"
         app:fabCustomSize="75dp"
+        app:tint="@color/black"
         app:srcCompat="@drawable/baseline_camera_alt_24" />
 
     <!-- Linear progress indicator -->

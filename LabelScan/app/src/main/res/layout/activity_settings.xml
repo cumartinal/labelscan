@@ -7,6 +7,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.bottomappbar.BottomAppBar
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        app:backgroundTint="@color/green_strong"
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,8 +16,7 @@
         android:minHeight="75dp"
         app:fabCradleMargin="10dp"
         app:fabCradleRoundedCornerRadius="10dp"
-        app:fabCradleVerticalOffset="10dp"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
+        app:fabCradleVerticalOffset="10dp">
 
         <!-- This is not an active view so colours are toned down -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,7 +37,6 @@
         android:id="@+id/scan_extended_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
         android:contentDescription="@string/scan_extended_fab_content_desc"
         android:fontFamily="@font/notosans_jp_medium"
         android:onClick="newScan"
