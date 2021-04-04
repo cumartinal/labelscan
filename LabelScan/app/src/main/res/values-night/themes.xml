@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/green_low</item>
         <!-- ?attr/colorPrimaryVariant -->
+        <item name="colorOnSurface">@color/custom_colorOnSurface</item>
 
         <!-- Customize your theme here. -->
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
@@ -36,6 +37,22 @@
         <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body.Text</item>
         <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+    <style name="Theme.LabelScan.Pale" parent="Theme.LabelScan">
+        <item name="colorPrimary">@color/green_low</item>
+        <item name="colorPrimaryVariant">@color/green_low</item>
+        <item name="colorOnPrimary">@color/custom_colorOnSurface_pale</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/purple_low</item>
+        <item name="colorSecondaryVariant">@color/purple_low</item>
+        <item name="colorOnSecondary">@color/custom_colorOnSurface_pale</item>
+        <item name="colorOnSurface">@color/custom_colorOnSurface_pale</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/green_low</item>
+        <item name="android:colorBackground">@color/custom_colorBackground_pale</item>
+        <item name="android:textColorPrimary">@color/custom_textColorPrimary</item>
+
     </style>
 
 </resources>

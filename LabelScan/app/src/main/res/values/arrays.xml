@@ -21,6 +21,9 @@
             @string/theme_dark
         </item>
         <item>
+            @string/theme_pale
+        </item>
+        <item>
             @string/theme_follow_system
         </item>
     </string-array>
@@ -31,6 +34,9 @@
         </item>
         <item>
             @string/preference_option_theme_dark
+        </item>
+        <item>
+            @string/preference_option_theme_pale
         </item>
         <item>
             @string/preference_option_theme_system

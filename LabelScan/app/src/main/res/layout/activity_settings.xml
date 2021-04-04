@@ -8,7 +8,7 @@
 
     <com.google.android.material.bottomappbar.BottomAppBar
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        app:backgroundTint="@color/green_strong"
+        app:backgroundTint="?attr/colorPrimaryVariant"
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,8 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
-            app:itemIconTint="@color/custom_colorOnSurface"
-            app:itemTextColor="@color/custom_colorOnSurface"
             app:elevation="0dp"
             android:background="@android:color/transparent"
             app:menu="@menu/bottom_navigation_menu" />

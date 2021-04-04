@@ -17,6 +17,10 @@ class CustomApplication : Application() {
         when (themingValue) {
             "Light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             "Dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            "Pale" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                setTheme(R.style.Theme_LabelScan_Pale)
+            }
             "System" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             else -> {
                 Log.d("CustomApplication", "ERROR CHANGING THEMING, PREFERENCE VALUE DOES NOT EXIST")

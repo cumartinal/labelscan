@@ -1,23 +1,19 @@
 package com.cumartinal.labelscan
 
-import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
-import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import androidx.core.app.ActivityCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_display_text.*
-import kotlinx.android.synthetic.main.activity_settings.scan_extended_fab
 import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.activity_settings.bottom_navigation_main
 
 
 class SettingsActivity : AppCompatActivity(),
@@ -27,7 +23,29 @@ class SettingsActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        // Apply theme depending on saved preference
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val themingValue = sharedPreferences.getString("theming", "")
+        when (themingValue) {
+            "Light" -> {
+                setDefaultNightMode(MODE_NIGHT_NO)
+                setTheme(R.style.Theme_LabelScan)
+            }
+            "Dark" -> {
+                setDefaultNightMode(MODE_NIGHT_YES)
+                setTheme(R.style.Theme_LabelScan)
+            }
+            "Pale" -> {
+                setTheme(R.style.Theme_LabelScan_Pale)
+            }
+            "System" -> {
+                setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
+                setTheme(R.style.Theme_LabelScan)
+            }
+            else -> {
+                Log.d(TAG, "ERROR LOADING THEMING, PREFERENCE VALUE DOES NOT EXIST")
+            }
+        }
         setContentView(R.layout.activity_settings)
         // Set up bottom navigation and its listener
         bottom_navigation_main.selectedItemId = R.id.settingsItem
@@ -36,8 +54,8 @@ class SettingsActivity : AppCompatActivity(),
                 R.id.favoritesItem -> {
                     val contextView = findViewById<View>(R.id.bottom_navigation_main)
                     Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates", Snackbar.LENGTH_LONG)
-                        .setAnchorView(scan_extended_fab)
-                        .show()
+                            .setAnchorView(scan_extended_fab)
+                            .show()
                     false
                 }
                 R.id.settingsItem -> {
@@ -52,7 +70,6 @@ class SettingsActivity : AppCompatActivity(),
                 .replace(R.id.settings_container, MySettingsFragment())
                 .commit()
 
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         listener =
                 SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences: SharedPreferences, key: String ->
                     if (key == "theming") {
@@ -60,9 +77,36 @@ class SettingsActivity : AppCompatActivity(),
                         Log.i(TAG, "Theming preference value was updated to: " + preferenceValue)
 
                         when (preferenceValue) {
-                            "Light" -> setDefaultNightMode(MODE_NIGHT_NO)
-                            "Dark" -> setDefaultNightMode(MODE_NIGHT_YES)
-                            "System" -> setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
+                            "Light" -> {
+                                // Double switch just in case the previous theme was Pale
+                                // Inelegant? Yes. Is there a better way to do this? Probably.
+                                // It works though and it's just one extra line.
+                                // The fade to black has the same duration too.
+                                setDefaultNightMode(MODE_NIGHT_YES)
+                                setDefaultNightMode(MODE_NIGHT_NO)
+                                setTheme(R.style.Theme_LabelScan)
+                            }
+                            "Dark" -> {
+                                setDefaultNightMode(MODE_NIGHT_YES)
+                                setTheme(R.style.Theme_LabelScan)
+                            }
+                            "Pale" -> {
+                                setDefaultNightMode(MODE_NIGHT_NO)
+                                setTheme(R.style.Theme_LabelScan_Pale)
+                                // Restarts the whole application
+                                // HORRIBLE WAY TO DO THIS
+                                // Should stay in the same screen, but I can't figure out how to refresh ActivityMain's without switching there
+                                // TODO
+                                val intent = baseContext.packageManager.getLaunchIntentForPackage(
+                                        baseContext.packageName)
+                                intent!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                startActivity(intent)
+                            }
+                            "System" -> {
+                                setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
+                                setTheme(R.style.Theme_LabelScan)
+                            }
                             else -> {
                                 Log.d(TAG, "ERROR CHANGING THEMING, PREFERENCE VALUE DOES NOT EXIST")
                             }

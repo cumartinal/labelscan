@@ -70,7 +70,7 @@
         app:fabCradleRoundedCornerRadius="10dp"
         app:fabCradleVerticalOffset="10dp"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        app:backgroundTint="@color/green_strong">
+        app:backgroundTint="?attr/colorPrimaryVariant">
 
         <!-- This is not an active view so colours are toned down -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -92,7 +92,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="37.5dp"
         android:layout_gravity="bottom|right"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/custom_colorBackground_pale"
         android:contentDescription="@string/string_scan_fab"
         app:maxImageSize="32dp"
         app:fabCustomSize="75dp"

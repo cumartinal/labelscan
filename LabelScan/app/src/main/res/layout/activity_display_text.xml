@@ -62,7 +62,7 @@
         app:fabCradleRoundedCornerRadius="10dp"
         app:fabCradleVerticalOffset="10dp"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        app:backgroundTint="@color/green_strong">
+        app:backgroundTint="?attr/colorPrimaryVariant">
 
         <!-- This is not an active view so colours are toned down -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -71,8 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
-            app:itemIconTint="@color/custom_colorOnSurface"
-            app:itemTextColor="@color/custom_colorOnSurface"
             app:elevation="0dp"
             android:background="@android:color/transparent"
             app:menu="@menu/bottom_navigation_menu" />

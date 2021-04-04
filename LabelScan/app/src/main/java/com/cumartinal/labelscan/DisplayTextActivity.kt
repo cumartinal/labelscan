@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +22,30 @@ class DisplayTextActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Apply theme depending on saved preference
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+        val themingValue = sharedPreferences.getString("theming", "")
+        when (themingValue) {
+            "Light" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                setTheme(R.style.Theme_LabelScan)
+            }
+            "Dark" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                setTheme(R.style.Theme_LabelScan)
+            }
+            "Pale" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                setTheme(R.style.Theme_LabelScan_Pale)
+            }
+            "System" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                setTheme(R.style.Theme_LabelScan)
+            }
+            else -> {
+                Log.d(TAG, "ERROR LOADING THEMING, PREFERENCE VALUE DOES NOT EXIST")
+            }
+        }
         setContentView(R.layout.activity_display_text)
 
         // Get the Intent that started this activity and extract the string
@@ -62,8 +88,8 @@ class DisplayTextActivity : AppCompatActivity() {
         }
 
         val nutrientView = findViewById<RecyclerView>(R.id.nutrientRecyclerView).apply {
-
         }
+
     }
 
     // Called when "+ Scan" button is pressed, creates MainActivity
