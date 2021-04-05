@@ -73,13 +73,17 @@ class DisplayTextActivity : AppCompatActivity() {
                     Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates", Snackbar.LENGTH_LONG)
                             .setAnchorView(scan_extended_fab)
                             .show()
-                    val mediaPlayerNavigationFav = MediaPlayer.create(this, R.raw.ui_tap_03)
-                    mediaPlayerNavigationFav.start()
+                    if (sharedPreferences.getBoolean("earcons", true)) {
+                        val mediaPlayerNavigationFav = MediaPlayer.create(this, R.raw.ui_tap_03)
+                        mediaPlayerNavigationFav.start()
+                    }
                     false
                 }
                 R.id.settingsItem -> {
-                    val mediaPlayerNavigationSet = MediaPlayer.create(this, R.raw.ui_tap_01)
-                    mediaPlayerNavigationSet.start()
+                    if (sharedPreferences.getBoolean("earcons", true)) {
+                        val mediaPlayerNavigationSet = MediaPlayer.create(this, R.raw.ui_tap_01)
+                        mediaPlayerNavigationSet.start()
+                    }
                     openSettings()
                     true
                 }
@@ -94,8 +98,11 @@ class DisplayTextActivity : AppCompatActivity() {
 
     // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan(view: View) {
-        val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.ui_tap_02)
-        mediaPlayerNavigationScan.start()
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+        if (sharedPreferences.getBoolean("earcons", true)) {
+            val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.ui_tap_02)
+            mediaPlayerNavigationScan.start()
+        }
         val intent = Intent(this, MainActivity::class.java)
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivityIfNeeded(intent, 0)

@@ -18,5 +18,12 @@
         android:icon="@drawable/ic_door_front"
         />
 
+    <SwitchPreference
+        android:key="earcons"
+        android:title="Play sound"
+        android:defaultValue="true"
+        android:icon="@drawable/ic_volume_up_black_24dp"
+        />
+
 </PreferenceScreen>
 

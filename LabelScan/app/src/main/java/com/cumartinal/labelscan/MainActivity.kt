@@ -91,9 +91,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up the listener for take photo button, make it play sound, make it freeze preview
-        val mediaPlayerCamera = MediaPlayer.create(this, R.raw.ui_camera_shutter)
+
         camera_capture_button.setOnClickListener {
-            mediaPlayerCamera.start()
+            if (sharedPreferences.getBoolean("earcons", true)) {
+                val mediaPlayerCamera = MediaPlayer.create(this, R.raw.ui_camera_shutter)
+                mediaPlayerCamera.start()
+            }
             takePhoto()
             val frozenBitmap = viewFinder.bitmap
             frozen_view.setImageBitmap(frozenBitmap)
@@ -116,13 +119,17 @@ class MainActivity : AppCompatActivity() {
                     )
                         .setAnchorView(camera_capture_button)
                         .show()
-                    val mediaPlayerNavigationFav = MediaPlayer.create(this, R.raw.ui_tap_03)
-                    mediaPlayerNavigationFav.start()
+                    if (sharedPreferences.getBoolean("earcons", true)) {
+                        val mediaPlayerNavigationFav = MediaPlayer.create(this, R.raw.ui_tap_03)
+                        mediaPlayerNavigationFav.start()
+                    }
                     false
                 }
                 R.id.settingsItem -> {
-                    val mediaPlayerNavigationSet = MediaPlayer.create(this, R.raw.ui_tap_01)
-                    mediaPlayerNavigationSet.start()
+                    if (sharedPreferences.getBoolean("earcons", true)) {
+                        val mediaPlayerNavigationSet = MediaPlayer.create(this, R.raw.ui_tap_01)
+                        mediaPlayerNavigationSet.start()
+                    }
                     openSettings()
                     true
                 }
@@ -436,8 +443,11 @@ class MainActivity : AppCompatActivity() {
             sendText(recognizedText, nutritionArray)
         } else {
             image_analysis_progress_indicator.hide()
-            val mediaPlayerError = MediaPlayer.create(this, R.raw.alert_error)
-            mediaPlayerError.start()
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+            if (sharedPreferences.getBoolean("earcons", true)) {
+                val mediaPlayerError = MediaPlayer.create(this, R.raw.alert_error)
+                mediaPlayerError.start()
+            }
             MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle("Analysis failed!")
                     .setMessage(
@@ -445,8 +455,10 @@ class MainActivity : AppCompatActivity() {
                                 "\nPlease try again"
                     )
                     .setPositiveButton("OK") { dialog, which ->
-                        val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.navigation_hover_tap)
-                        mediaPlayerNavigationScan.start()
+                        if (sharedPreferences.getBoolean("earcons", true)) {
+                            val mediaPlayerNavigationScan = MediaPlayer.create(this, R.raw.navigation_hover_tap)
+                            mediaPlayerNavigationScan.start()
+                        }
                         viewFinder.visibility = View.VISIBLE
                         frozen_view.visibility = View.INVISIBLE
                     }
