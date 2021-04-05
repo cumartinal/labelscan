@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                         mediaPlayerNavigationSet.start()
                     }
                     openSettings()
-                    true
+                    false
                 }
                 else -> false
             }
@@ -151,6 +151,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         // Avoid viewFinder being frozen after coming back from DisplayTextActivity
         frozen_view.visibility = View.INVISIBLE
         viewFinder.visibility = View.VISIBLE
@@ -308,12 +309,22 @@ class MainActivity : AppCompatActivity() {
                 // from the "Calories" block, so text recognition here is different
                 // The previous and following blocks are checked to see if they have the value
                 if (line.text.contains("Calories")) {
-                    if (visionText.textBlocks[index + 1].text.any {it.isDigit()}) {
-                        nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).toInt()
-                        hasNutritionalInformation = true
-                    } else if (visionText.textBlocks[index - 1].text.any {it.isDigit()}) {
-                        nutritionArray[0] = (visionText.textBlocks[index - 1].text.filter { it.isDigit() }).toInt()
-                        hasNutritionalInformation = true
+                    var isCaloriesInSameLine = false
+                    for (element in line.elements) {
+                        if (element.text.any { it.isDigit() }) {
+                            nutritionArray[0] = (element.text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                            isCaloriesInSameLine = true
+                        }
+                    }
+                    if (!isCaloriesInSameLine) {
+                        if (visionText.textBlocks[index + 1].text.any {it.isDigit()}) {
+                            nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        } else if (visionText.textBlocks[index - 1].text.any {it.isDigit()}) {
+                            nutritionArray[0] = (visionText.textBlocks[index - 1].text.filter { it.isDigit() }).toInt()
+                            hasNutritionalInformation = true
+                        }
                     }
                 }
 
