@@ -38,9 +38,6 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-
-typealias LumaListener = (luma: Double) -> Unit
-typealias FreezeListener = (freeze: Double) -> Unit
 const val EXTRA_MESSAGE = "com.cumartinal.LabelScan.TEXT"
 
 class MainActivity : AppCompatActivity() {
@@ -320,7 +317,8 @@ class MainActivity : AppCompatActivity() {
                             isCaloriesInSameLine = true
                         }
                     }
-                    if (!isCaloriesInSameLine) {
+                    // Avoid ArrayIndexOutOfBoundsException
+                    if (!isCaloriesInSameLine && index != 0 && index < visionText.textBlocks.size) {
                         if (nutritionArray[0] == 0 && visionText.textBlocks[index + 1].text.any {it.isDigit()}) {
                             nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).toInt()
                             hasNutritionalInformation = true
