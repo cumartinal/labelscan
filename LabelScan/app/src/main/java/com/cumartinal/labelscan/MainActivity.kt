@@ -312,7 +312,7 @@ class MainActivity : AppCompatActivity() {
                     var isCaloriesInSameLine = false
                     for (element in line.elements) {
                         if (nutritionArray[0] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[0] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[0] = (element.text.filter { it.isDigit() }).take(3).toInt()
                             hasNutritionalInformation = true
                             isCaloriesInSameLine = true
                         }
@@ -320,10 +320,10 @@ class MainActivity : AppCompatActivity() {
                     // Avoid ArrayIndexOutOfBoundsException
                     if (!isCaloriesInSameLine && index != 0 && index < visionText.textBlocks.size) {
                         if (nutritionArray[0] == 0 && visionText.textBlocks[index + 1].text.any {it.isDigit()}) {
-                            nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).toInt()
+                            nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).take(3).toInt()
                             hasNutritionalInformation = true
                         } else if (nutritionArray[0] == 0 && visionText.textBlocks[index - 1].text.any {it.isDigit()}) {
-                            nutritionArray[0] = (visionText.textBlocks[index - 1].text.filter { it.isDigit() }).toInt()
+                            nutritionArray[0] = (visionText.textBlocks[index - 1].text.filter { it.isDigit() }).take(3).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -332,7 +332,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Total Fat")) {
                     for (element in line.elements) {
                         if (nutritionArray[1] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[1] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[1] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -341,7 +341,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Saturated Fat")) {
                     for (element in line.elements) {
                         if (nutritionArray[2] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[2] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[2] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -350,7 +350,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Trans Fat")) {
                     for (element in line.elements) {
                         if (nutritionArray[3] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[3] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[3] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -359,7 +359,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Cholesterol")) {
                     for (element in line.elements) {
                         if (nutritionArray[4] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[4] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[4] = (element.text.filter { it.isDigit() }).take(3).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -368,16 +368,16 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Sodium")) {
                     for (element in line.elements) {
                         if (nutritionArray[5] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[5] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[5] = (element.text.filter { it.isDigit() }).take(4).toInt()
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Total Carbohydrate")) {
+                if (line.text.contains("Carbohydrate")) {
                     for (element in line.elements) {
                         if (nutritionArray[6] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[6] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[6] = (element.text.filter { it.isDigit() }).take(3).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -386,16 +386,16 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Fiber")) {
                     for (element in line.elements) {
                         if (nutritionArray[7] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[7] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[7] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Total Sugars")) {
+                if (line.text.contains("Sugars")) {
                     for (element in line.elements) {
                         if (nutritionArray[8] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[8] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[8] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -404,7 +404,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Protein")) {
                     for (element in line.elements) {
                         if (nutritionArray[9] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[9] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[9] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -413,7 +413,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Vitamin D")) {
                     for (element in line.elements) {
                         if (nutritionArray[10] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[10] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[10] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -422,7 +422,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Calcium")) {
                     for (element in line.elements) {
                         if (nutritionArray[11] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[11]  = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[11]  = (element.text.filter { it.isDigit() }).take(4).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -431,7 +431,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Iron")) {
                     for (element in line.elements) {
                         if (nutritionArray[12] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[12] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[12] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -440,7 +440,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Potassium")) {
                     for (element in line.elements) {
                         if (nutritionArray[13] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[13] = (element.text.filter { it.isDigit() }).toInt()
+                            nutritionArray[13] = (element.text.filter { it.isDigit() }).take(4).toInt()
                             hasNutritionalInformation = true
                         }
                     }
