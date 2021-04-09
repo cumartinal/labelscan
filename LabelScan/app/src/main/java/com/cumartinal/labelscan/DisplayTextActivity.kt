@@ -94,6 +94,20 @@ class DisplayTextActivity : AppCompatActivity() {
         val nutrientView = findViewById<RecyclerView>(R.id.nutrientRecyclerView).apply {
         }
 
+        topAppBar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.graph -> {
+                    // Handle graph icon press
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
 
     // Called when "+ Scan" button is pressed, creates MainActivity

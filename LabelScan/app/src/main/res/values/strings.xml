@@ -17,4 +17,7 @@
     <string name="preference_option_theme_dark">Dark</string>
     <string name="preference_option_theme_pale">Pale</string>
     <string name="preference_option_theme_system">System</string>
+    <string name="page_title">New Scan</string>
+    <string name="view_graph">View graph</string>
+    <string name="content_description_view_graph">View graph</string>
 </resources>

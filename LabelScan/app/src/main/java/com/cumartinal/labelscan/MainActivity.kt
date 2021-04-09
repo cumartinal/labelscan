@@ -392,6 +392,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
+                // Recognises Total Sugars thanks to nutritionArray[8] == 0, taking the first line
+                // With 'sugars' and a related value
                 if (line.text.contains("Sugars")) {
                     for (element in line.elements) {
                         if (nutritionArray[8] == 0 && element.text.any { it.isDigit() }) {
