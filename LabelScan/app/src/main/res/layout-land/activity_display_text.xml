@@ -16,9 +16,10 @@
             app:title="@string/page_title"
             app:menu="@menu/top_app_bar_display_menu"
             app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
-            app:navigationIconTint="?attr/colorControlNormal"
+            app:navigationIconTint="?attr/android:textColorPrimary"
+            app:titleTextColor="?attr/android:textColorPrimary"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
-            app:background="?android:attr/colorBackground"
+            android:background="?android:attr/colorBackground"
             />
 
     </com.google.android.material.appbar.AppBarLayout>
