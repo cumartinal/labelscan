@@ -5,31 +5,36 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/page_title"
+            app:menu="@menu/top_app_bar_display_menu"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            app:navigationIconTint="?attr/colorControlNormal"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            app:background="?android:attr/colorBackground"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
         tools:context=".DisplayTextActivity">
 
-        <TextView
-            android:id="@+id/newScanTextView"
-            style="@style/TextAppearance.MdcTypographyStyles.Headline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/dmsans_bold"
-            android:text="@string/new_scan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="72dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginTop="52dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newScanTextView"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="16dp">
 
             <LinearLayout
@@ -41,8 +46,8 @@
                     android:id="@+id/nutrientRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingBottom="32dp"
-                    android:clipToPadding="false"/>
+                    android:clipToPadding="false"
+                    android:paddingBottom="32dp" />
 
             </LinearLayout>
 
@@ -55,7 +60,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:minHeight="75dp"
         app:fabCradleMargin="10dp"
         app:fabCradleRoundedCornerRadius="10dp"
         app:fabCradleVerticalOffset="10dp"
