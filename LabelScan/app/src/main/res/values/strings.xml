@@ -20,4 +20,8 @@
     <string name="page_title">New Scan</string>
     <string name="view_graph">View graph</string>
     <string name="content_description_view_graph">View graph</string>
+    <string name="decorative_placeholder">Decorative placeholder</string>
+    <string name="bottom_navigation_bar">Bottom navigation bar</string>
+    <string name="top_app_bar">Top toolbar</string>
+    <string name="app_bar_navigation">Return to scan screen</string>
 </resources>

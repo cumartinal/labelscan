@@ -29,6 +29,7 @@ class DisplayTextActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerAdapter
     private lateinit var adapterPies: RecyclerAdapterPies
     private lateinit var nutritionArray: IntArray
+    private var isPale = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,7 @@ class DisplayTextActivity : AppCompatActivity() {
             "Pale" -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 setTheme(R.style.Theme_LabelScan_Pale)
+                isPale = true
             }
             "System" -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
@@ -74,13 +76,12 @@ class DisplayTextActivity : AppCompatActivity() {
         adapter = RecyclerAdapter(nutritionArray)
         nutrientRecyclerView.adapter = adapter
 
+        // RecyclerAdapterPies needs to know if the theme we're using is pale
+        // And which color the background is
         val typedValue = TypedValue()
-        theme.resolveAttribute(R.attr.colorSecondary, typedValue, true)
-        val secondaryColor = typedValue.data
-        val typedValue2 = TypedValue()
-        theme.resolveAttribute(R.attr.backgroundColor, typedValue2, true)
-        val backgroundColor = typedValue2.data
-        adapterPies = RecyclerAdapterPies(nutritionArray, secondaryColor, backgroundColor)
+        theme.resolveAttribute(R.attr.backgroundColor, typedValue, true)
+        val backgroundColor = typedValue.data
+        adapterPies = RecyclerAdapterPies(nutritionArray, isPale, backgroundColor)
         nutrientPiesRecyclerView.adapter = adapterPies
 
         // Add dividers between items on recyclerviews
@@ -98,7 +99,6 @@ class DisplayTextActivity : AppCompatActivity() {
         )
 
         // Set up bottom navigation
-        bottom_navigation_main.selectedItemId = R.id.placeholder
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {

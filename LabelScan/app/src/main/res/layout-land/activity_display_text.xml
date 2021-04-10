@@ -19,6 +19,8 @@
             app:navigationIconTint="?attr/android:textColorPrimary"
             app:titleTextColor="?attr/android:textColorPrimary"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:navigationContentDescription="@string/app_bar_navigation"
+            android:contentDescription="@string/top_app_bar"
             android:background="?android:attr/colorBackground"
             />
 
@@ -88,6 +90,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
             app:elevation="0dp"
+            android:contentDescription="@string/bottom_navigation_bar"
             android:background="@android:color/transparent"
             app:menu="@menu/bottom_navigation_menu" />
 

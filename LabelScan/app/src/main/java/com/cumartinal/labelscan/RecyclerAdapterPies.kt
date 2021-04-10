@@ -14,7 +14,7 @@ import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.data.*
 
-class RecyclerAdapterPies(private val nutritionArray: IntArray, private val secondaryColor: Int,
+class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPale: Boolean,
                           private val backgroundColor: Int) :
     RecyclerView.Adapter<RecyclerAdapterPies.ViewHolder>() {
 
@@ -69,7 +69,29 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val seco
 
             // Add colors
             val colors: ArrayList<Int> = ArrayList()
-            colors.add(secondaryColor)
+            var colorToAdd: Int
+            if (percentageDV >= 20) {
+                colorToAdd = if (isPale) {
+                    Color.parseColor("#EF504E")
+                } else {
+                    Color.parseColor("#D50000")
+                }
+                colors.add(colorToAdd)
+            } else if (percentageDV >= 5) {
+                colorToAdd = if (isPale) {
+                    Color.parseColor("#C76400")
+                } else {
+                    Color.parseColor("#F56A00")
+                }
+                colors.add(colorToAdd)
+            } else {
+                colorToAdd = if (isPale) {
+                    Color.parseColor("#558B2F")
+                } else {
+                    Color.parseColor("#33691E")
+                }
+                colors.add(colorToAdd)
+            }
             colors.add(backgroundColor)
             pieDataSet.colors = colors
 
