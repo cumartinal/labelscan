@@ -1,9 +1,11 @@
 package com.cumartinal.labelscan
 
 import android.content.Intent
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -23,11 +25,14 @@ import kotlinx.android.synthetic.main.activity_display_text.*
 class DisplayTextActivity : AppCompatActivity() {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var linearLayoutManagerPies: LinearLayoutManager
     private lateinit var adapter: RecyclerAdapter
+    private lateinit var adapterPies: RecyclerAdapterPies
     private lateinit var nutritionArray: IntArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Color value to pass to RecyclerAdapterPies
         // Apply theme depending on saved preference
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
         val themingValue = sharedPreferences.getString("theming", "")
@@ -59,18 +64,35 @@ class DisplayTextActivity : AppCompatActivity() {
         @Suppress("UNCHECKED_CAST")
         nutritionArray = intent.getSerializableExtra("intArray") as IntArray
 
-        // Set up recycler view
+        // Set up recycler views
         linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManagerPies = LinearLayoutManager(this)
         nutrientRecyclerView.layoutManager = linearLayoutManager
+        nutrientPiesRecyclerView.layoutManager = linearLayoutManagerPies
 
-        // Set up adapter for recyclerview
+        // Set up adapter for recyclerviews
         adapter = RecyclerAdapter(nutritionArray)
         nutrientRecyclerView.adapter = adapter
 
-        // Add dividers between items on recyclerview
+        val typedValue = TypedValue()
+        theme.resolveAttribute(R.attr.colorSecondary, typedValue, true)
+        val secondaryColor = typedValue.data
+        val typedValue2 = TypedValue()
+        theme.resolveAttribute(R.attr.backgroundColor, typedValue2, true)
+        val backgroundColor = typedValue2.data
+        adapterPies = RecyclerAdapterPies(nutritionArray, secondaryColor, backgroundColor)
+        nutrientPiesRecyclerView.adapter = adapterPies
+
+        // Add dividers between items on recyclerviews
         nutrientRecyclerView.addItemDecoration(
             CustomDividerItemDecoration(
                 nutrientRecyclerView.getContext(),
+                linearLayoutManager.getOrientation()
+            )
+        )
+        nutrientPiesRecyclerView.addItemDecoration(
+            CustomDividerItemDecoration(
+                nutrientPiesRecyclerView.getContext(),
                 linearLayoutManager.getOrientation()
             )
         )
@@ -106,9 +128,6 @@ class DisplayTextActivity : AppCompatActivity() {
             }
         }
 
-        val nutrientView = findViewById<RecyclerView>(R.id.nutrientRecyclerView).apply {
-        }
-
         topAppBar.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -117,13 +136,12 @@ class DisplayTextActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.graph -> {
                     // Handle graph icon press
-                    if (nutrientChart.isVisible) {
-                        nutrientChart.visibility = View.INVISIBLE
+                    if (nutrientPiesScrollView.isVisible) {
+                        nutrientPiesScrollView.visibility = View.INVISIBLE
                         nutrientScrollView.visibility = View.VISIBLE
                     } else {
-                        nutrientChart.visibility = View.VISIBLE
+                        nutrientPiesScrollView.visibility = View.VISIBLE
                         nutrientScrollView.visibility = View.INVISIBLE
-                        makeNutrientChart()
                     }
                     true
                 }
@@ -131,71 +149,6 @@ class DisplayTextActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    private fun makeNutrientChart() {
-        // Create chart and apply data
-        val chart = findViewById<View>(R.id.nutrientChart) as HorizontalBarChart
-        val data = BarData(getDataSet())
-        chart.data = data
-
-        // Customise chart's appearance
-        chart.setScaleEnabled(false)
-        chart.setTouchEnabled(false)
-
-        // Setting the axis to the actual location on-screen
-        // This API is an absolute mess
-        val rightAxis = chart.xAxis
-        val topAxis = chart.axisLeft
-        val bottomAxis = chart.axisRight
-        rightAxis.setDrawGridLines(false)
-        topAxis.setAxisMaximum(100f)
-        topAxis.setDrawLabels(false) // no axis labels
-        topAxis.setDrawAxisLine(false) // no axis line
-        topAxis.setDrawGridLines(false)
-        bottomAxis.setAxisMaximum(100f)
-        bottomAxis.setDrawLabels(false) // no axis labels
-        bottomAxis.setDrawAxisLine(false) // no axis line
-        bottomAxis.setDrawGridLines(false)
-        chart.animateXY(500, 500)
-        chart.invalidate()
-    }
-
-    private fun getDataSet(): BarDataSet? {
-        val entries: ArrayList<BarEntry> = ArrayList()
-        // Make an entry for each nutrient depending on it's porcentual DV
-        // Daily values taken from:
-        // https://www.fda.gov/food/new-nutrition-facts-label/daily-value-new-nutrition-and-supplement-facts-labels
-        // Calories (2000)
-        entries.add(BarEntry(14f, (nutritionArray[0] / 2000f) * 100))
-        // Total fat (78)
-        entries.add(BarEntry(13f, (nutritionArray[1] / 78f) * 100))
-        // Saturated fat (20)
-        entries.add(BarEntry(12f, 30f))
-        // Trans fat (2, taken from https://medlineplus.gov/ency/patientinstructions/000786.htm#:~:text=You%20should%20limit%20saturated%20fat,or%202%20grams%20per%20day.)
-        entries.add(BarEntry(11f, 40f))
-        // Cholesterol (300)
-        entries.add(BarEntry(10f, 90f))
-        // Sodium (2300)
-        entries.add(BarEntry(9f, 100f))
-        // Total carbs (275)
-        entries.add(BarEntry(8f, 0f))
-        // Fiber (28)
-        entries.add(BarEntry(7f, 20f))
-        // Sugars (50) (Should become added sugars)
-        entries.add(BarEntry(6f, 80f))
-        // Protein (50)
-        entries.add(BarEntry(5f, 50f))
-        // Vitamin D (20)
-        entries.add(BarEntry(4f, 50f))
-        // Calcium (1300)
-        entries.add(BarEntry(3f, 60f))
-        // Iron (18)
-        entries.add(BarEntry(2f, 30f))
-        // Potassium (4700)
-        entries.add(BarEntry(1f, 40f))
-
-        return BarDataSet(entries, "Percentage of daily recommended value")
     }
 
     // Called when "+ Scan" button is pressed, creates MainActivity

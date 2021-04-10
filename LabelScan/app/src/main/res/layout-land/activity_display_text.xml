@@ -39,32 +39,33 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="16dp">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/nutrientRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/nutrientRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingBottom="32dp" />
-
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="32dp" />
 
         </ScrollView>
 
-        <com.github.mikephil.charting.charts.HorizontalBarChart
-            android:id="@+id/nutrientChart"
+        <ScrollView
+            android:id="@+id/nutrientPiesScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="84dp"
-            android:visibility="invisible"
+            android:layout_marginTop="52dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="16dp"
+            android:visibility="invisible">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/nutrientPiesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="32dp"/>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

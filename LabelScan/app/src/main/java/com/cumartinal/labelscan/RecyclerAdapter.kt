@@ -56,6 +56,4 @@ class RecyclerAdapter(private val nutritionArray: IntArray) :
         }
     }
 
-
-
 }
