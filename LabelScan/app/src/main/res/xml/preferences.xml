@@ -12,6 +12,14 @@
         app:title="Appearance" />
 
     <SwitchPreference
+        android:key="reducedMotion"
+        android:title="Enable reduced motion"
+        android:summary="Reduce the amount and intensity of animations"
+        android:defaultValue="false"
+        android:icon="@drawable/ic_animation_black_24dp"
+        />
+
+    <SwitchPreference
         android:key="doubleTapExit"
         android:title="Double tap back to exit app"
         android:defaultValue="false"

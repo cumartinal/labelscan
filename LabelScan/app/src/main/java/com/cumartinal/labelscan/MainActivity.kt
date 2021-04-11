@@ -159,7 +159,9 @@ class MainActivity : AppCompatActivity() {
         analysisProgressDialog.show()
 
         // Show progress indicator
-        image_analysis_progress_indicator.show()
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+        if (!sharedPreferences.getBoolean("reducedMotion", false))
+            image_analysis_progress_indicator.show()
 
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return

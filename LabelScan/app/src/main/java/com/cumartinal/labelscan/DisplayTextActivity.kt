@@ -21,6 +21,8 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_display_text.*
+import kotlinx.android.synthetic.main.activity_display_text.bottom_navigation_main
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class DisplayTextActivity : AppCompatActivity() {
@@ -95,7 +97,8 @@ class DisplayTextActivity : AppCompatActivity() {
                 backgroundColor = Color.argb(12, Color.red(backgroundColor), Color.green(backgroundColor), Color.blue(backgroundColor))
             }
         }
-        adapterPies = RecyclerAdapterPies(nutritionArray, isPale, backgroundColor)
+        val isMotionReduced = (sharedPreferences.getBoolean("reducedMotion", false))
+        adapterPies = RecyclerAdapterPies(nutritionArray, isPale, backgroundColor, isMotionReduced)
         nutrientPiesRecyclerView.adapter = adapterPies
 
         // Add dividers between items on recyclerviews

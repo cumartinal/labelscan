@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.data.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPale: Boolean,
-                          private val backgroundColor: Int) :
+                          private val backgroundColor: Int, private val isMotionReduced: Boolean) :
     RecyclerView.Adapter<RecyclerAdapterPies.ViewHolder>() {
 
     // Make Array with names of nutrients
@@ -103,7 +104,8 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
             viewHolder.nutrientPieView.setDrawEntryLabels(false)
             viewHolder.nutrientPieView.setTouchEnabled(false)
             viewHolder.nutrientPieView.legend.isEnabled = false
-            viewHolder.nutrientPieView.animateY(1400, Easing.EaseInOutQuad)
+            if (!isMotionReduced)
+                viewHolder.nutrientPieView.animateY(1400, Easing.EaseInOutQuad)
             viewHolder.nutrientPieView.invalidate()
         }
 
