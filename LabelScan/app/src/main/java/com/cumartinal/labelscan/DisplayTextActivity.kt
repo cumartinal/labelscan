@@ -1,6 +1,7 @@
 package com.cumartinal.labelscan
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -80,7 +81,20 @@ class DisplayTextActivity : AppCompatActivity() {
         // And which color the background is
         val typedValue = TypedValue()
         theme.resolveAttribute(R.attr.backgroundColor, typedValue, true)
-        val backgroundColor = typedValue.data
+        var backgroundColor = typedValue.data
+        // Transparency effect will change depending on theme
+        // Dark theme needs to have the pie background be lighter than the actual background
+        // Light and pale theme need to have it darker (alpha increased)
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                backgroundColor = Color.argb(255,
+                        Color.red(backgroundColor) + 40, Color.green(backgroundColor) + 40,
+                        Color.blue(backgroundColor) + 40)
+            }
+            else -> {
+                backgroundColor = Color.argb(12, Color.red(backgroundColor), Color.green(backgroundColor), Color.blue(backgroundColor))
+            }
+        }
         adapterPies = RecyclerAdapterPies(nutritionArray, isPale, backgroundColor)
         nutrientPiesRecyclerView.adapter = adapterPies
 

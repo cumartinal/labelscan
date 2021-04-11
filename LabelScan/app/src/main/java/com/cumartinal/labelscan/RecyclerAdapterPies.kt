@@ -95,10 +95,14 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
             colors.add(backgroundColor)
             pieDataSet.colors = colors
 
+            // Cuestomise appearance and interaction
             viewHolder.nutrientPieView.data = PieData(pieDataSet)
             viewHolder.nutrientPieView.isDrawHoleEnabled = false
+            viewHolder.nutrientPieView.holeRadius = 10f
             viewHolder.nutrientPieView.description.isEnabled = false
             viewHolder.nutrientPieView.setDrawEntryLabels(false)
+            viewHolder.nutrientPieView.setTouchEnabled(false)
+            viewHolder.nutrientPieView.legend.isEnabled = false
             viewHolder.nutrientPieView.animateY(1400, Easing.EaseInOutQuad)
             viewHolder.nutrientPieView.invalidate()
         }
