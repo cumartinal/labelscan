@@ -26,6 +26,7 @@
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:importantForAccessibility="no"
             android:scaleType="centerCrop"
             android:visibility="invisible" />
 
@@ -92,12 +93,25 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:layout_gravity="bottom|right"
-        android:backgroundTint="@color/custom_colorBackground_pale"
         android:contentDescription="@string/string_scan_fab"
         app:maxImageSize="32dp"
         app:fabCustomSize="75dp"
+        app:backgroundTint="@color/custom_colorBackground_pale"
         app:tint="@color/black"
         app:srcCompat="@drawable/baseline_camera_alt_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/gallery_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="34dp"
+        android:layout_marginBottom="104dp"
+        android:layout_gravity="bottom|right"
+        android:contentDescription="@string/gallery_button_desc"
+        app:fabSize="mini"
+        app:backgroundTint="@color/translucent_black"
+        app:tint="@color/white"
+        app:srcCompat="@drawable/ic_image_black_24dp" />
 
     <!-- Linear progress indicator -->
     <com.google.android.material.progressindicator.LinearProgressIndicator

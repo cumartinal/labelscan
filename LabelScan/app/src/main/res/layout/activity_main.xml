@@ -101,6 +101,20 @@
         app:layout_anchorGravity="center_horizontal"
         app:srcCompat="@drawable/baseline_camera_alt_24" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/gallery_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="84dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/gallery_button_desc"
+        app:fabSize="mini"
+        app:backgroundTint="@color/translucent_black"
+        app:tint="@color/white"
+        app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchorGravity="start"
+        app:srcCompat="@drawable/ic_image_black_24dp" />
+
     <!-- Linear progress indicator -->
 
     <com.google.android.material.progressindicator.LinearProgressIndicator

@@ -4,24 +4,20 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore.Images.Media.getBitmap
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.recreate
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -33,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_display_text.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.bottom_navigation_main
 import java.io.File
-import java.nio.ByteBuffer
+import java.io.IOException
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -49,6 +45,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var analysisProgressDialog: AlertDialog
 
     private var backPressedTimeStamp = 0.toLong()
+
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        // Handle the returned URI
+        analyze(uri)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,12 +84,11 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
 
         // Set up the listener for take photo button, make it play sound, make it freeze preview
-
         camera_capture_button.setOnClickListener {
             if (sharedPreferences.getBoolean("earcons", true)) {
                 val mediaPlayerCamera = MediaPlayer.create(this, R.raw.ui_camera_shutter)
@@ -102,20 +102,24 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        // Set up listener for choose photo from gallery button
+        gallery_button.setOnClickListener {
+            getContent.launch("image/*")
+        }
+
         // Set up bottom navigation and its listener
         bottom_navigation_main.selectedItemId = R.id.placeholder
-
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {
                     val contextView = findViewById<View>(R.id.bottom_navigation_main)
                     Snackbar.make(
-                        contextView,
-                        "This feature is not yet implemented! Please wait for future updates",
-                        Snackbar.LENGTH_LONG
+                            contextView,
+                            "This feature is not yet implemented! Please wait for future updates",
+                            Snackbar.LENGTH_LONG
                     )
-                        .setAnchorView(camera_capture_button)
-                        .show()
+                            .setAnchorView(camera_capture_button)
+                            .show()
                     if (sharedPreferences.getBoolean("earcons", true)) {
                         val mediaPlayerNavigationFav = MediaPlayer.create(this, R.raw.ui_tap_03)
                         mediaPlayerNavigationFav.start()
@@ -181,17 +185,17 @@ class MainActivity : AppCompatActivity() {
         // Set up image capture listener, which is triggered after photo has
         // been taken
         imageCapture.takePicture(ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageCapturedCallback() {
-                override fun onCaptureSuccess(image: ImageProxy) {
-                    // Send to analysis
-                    analyze(image)
-                    super.onCaptureSuccess(image)
-                }
+                object : ImageCapture.OnImageCapturedCallback() {
+                    override fun onCaptureSuccess(image: ImageProxy) {
+                        // Send to analysis
+                        analyze(image)
+                        super.onCaptureSuccess(image)
+                    }
 
-                override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                }
-            })
+                    override fun onError(exc: ImageCaptureException) {
+                        Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                    }
+                })
     }
 
 
@@ -204,13 +208,13 @@ class MainActivity : AppCompatActivity() {
 
             // Preview
             val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(viewFinder.createSurfaceProvider())
-                }
+                    .build()
+                    .also {
+                        it.setSurfaceProvider(viewFinder.createSurfaceProvider())
+                    }
 
             imageCapture = ImageCapture.Builder()
-                .build()
+                    .build()
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -221,7 +225,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 val camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture
+                        this, cameraSelector, preview, imageCapture
                 )
 
                 val cameraControl = camera.cameraControl
@@ -233,8 +237,8 @@ class MainActivity : AppCompatActivity() {
                         MotionEvent.ACTION_DOWN -> return@setOnTouchListener true
                         MotionEvent.ACTION_UP -> {
                             // Get the MeteringPointFactory from PreviewView
-                            val factory : MeteringPointFactory  = SurfaceOrientedMeteringPointFactory(
-                                viewFinder.width.toFloat(), viewFinder.height.toFloat())
+                            val factory: MeteringPointFactory = SurfaceOrientedMeteringPointFactory(
+                                    viewFinder.width.toFloat(), viewFinder.height.toFloat())
 
                             // Create a MeteringPoint from the tap coordinates
                             val point = factory.createPoint(motionEvent.x, motionEvent.y)
@@ -267,8 +271,8 @@ class MainActivity : AppCompatActivity() {
         if (image != null) {
             // Obtain image object
             val image = InputImage.fromMediaImage(
-                image,
-                imageProxy.imageInfo.rotationDegrees
+                    image,
+                    imageProxy.imageInfo.rotationDegrees
             )
 
             // Pass image to an ML Kit Vision API
@@ -288,6 +292,39 @@ class MainActivity : AppCompatActivity() {
                         Log.e(TAG, "MLKit text recognition failed", e)
                     }
 
+        }
+    }
+
+    // Method that passes a photo URI to MLKit to extract the text
+    // Called instead of analyze(ImageProxy) when the user presses the gallery_button
+    private fun analyze(uri: Uri?) {
+        // Create alert
+        analysisProgressDialog.show()
+
+        // Show progress indicator
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+        if (!sharedPreferences.getBoolean("reducedMotion", false))
+            image_analysis_progress_indicator.show()
+
+        val image: InputImage
+        try {
+            image = InputImage.fromFilePath(this, uri)
+
+            // Pass image to an ML Kit Vision API
+            val recognizer = TextRecognition.getClient()
+            val result = recognizer.process(image)
+                    .addOnSuccessListener { visionText ->
+                        // Task completed successfully
+                        Log.d("TAG", visionText.text)
+                        // Parse the text and send it to a new activity
+                        parseRecognizedText(visionText)
+                    }
+                    .addOnFailureListener { e ->
+                        // Task failed with an exception
+                        Log.e(TAG, "MLKit text recognition failed", e)
+                    }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
@@ -467,8 +504,8 @@ class MainActivity : AppCompatActivity() {
             MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle("Analysis failed!")
                     .setMessage(
-                        "There was no nutritional information in the image." +
-                                "\nPlease try again"
+                            "There was no nutritional information in the image." +
+                                    "\nPlease try again"
                     )
                     .setPositiveButton("OK") { dialog, which ->
                         if (sharedPreferences.getBoolean("earcons", true)) {
@@ -486,7 +523,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it
+                baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -505,17 +542,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+            requestCode: Int, permissions: Array<String>, grantResults:
+            IntArray
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
                 Toast.makeText(
-                    this,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT
+                        this,
+                        "Permissions not granted by the user.",
+                        Toast.LENGTH_SHORT
                 ).show()
                 finish()
             }

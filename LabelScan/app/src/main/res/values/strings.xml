@@ -24,4 +24,5 @@
     <string name="bottom_navigation_bar">Bottom navigation bar</string>
     <string name="top_app_bar">Top toolbar</string>
     <string name="app_bar_navigation">Return to scan screen</string>
+    <string name="gallery_button_desc">Choose image from gallery</string>
 </resources>

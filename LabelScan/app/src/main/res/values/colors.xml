@@ -18,6 +18,8 @@
     <color name="purple_medium">#FF087784</color>
     <color name="purple_strong">#FF004b57</color>
 
+    <color name="translucent_black">#AA000000</color>
+
     <color name="custom_colorOnSurface_pale">#FF383838</color>
     <color name="custom_textColorPrimary">#89000000</color>
     <color name="custom_colorBackground_pale">#FFEDEDED</color>
