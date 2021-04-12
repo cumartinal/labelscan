@@ -14,6 +14,7 @@ import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.data.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.roundToInt
 
 class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPale: Boolean,
                           private val backgroundColor: Int, private val isMotionReduced: Boolean) :
@@ -57,11 +58,13 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
     // Replace the contents of a view invoked by the layout manager
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         if (nutritionArray != null) {
-            viewHolder.nutrientTextView.text = nutrientNames.get(position)
+            // Create name of nutrient and percentage
+            val percentageDV = (nutritionArray[position] / nutrientDVs[position]) * 100
+            viewHolder.nutrientTextView.text = nutrientNames.get(position) + "\n" + "DV: " + percentageDV.roundToInt() + "%"
+            viewHolder.nutrientTextView.contentDescription = nutrientNames.get(position) + " Daily Value: " + percentageDV.roundToInt() + "%"
 
             // Add entries and create PieDataSet
             val entries: ArrayList<PieEntry> = ArrayList()
-            val percentageDV = (nutritionArray[position] / nutrientDVs[position]) * 100
             entries.add(PieEntry(percentageDV, "%"))
             entries.add(PieEntry(100 - percentageDV, ""))
             val pieDataSet = PieDataSet(entries, "")
