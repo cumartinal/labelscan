@@ -3,10 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/graph"
-        android:icon="@drawable/ic_poll_black_24dp"
-        android:title="@string/view_graph"
-        android:contentDescription="@string/content_description_view_graph"
+        android:id="@+id/piesMenuItem"
+        android:icon="@drawable/ic_pie_chart_black_filled_24dp"
+        android:title="@string/view_pies"
+        android:contentDescription="@string/content_description_view_pies"
+        app:iconTint="?attr/android:textColorPrimary"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/listMenuItem"
+        android:icon="@drawable/ic_view_list_black_filled_24dp"
+        android:title="@string/view_list"
+        android:contentDescription="@string/content_description_view_list"
+        app:iconTint="?attr/android:textColorPrimary"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>

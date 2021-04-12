@@ -7,6 +7,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -33,6 +34,7 @@ class DisplayTextActivity : AppCompatActivity() {
     private lateinit var adapterPies: RecyclerAdapterPies
     private lateinit var nutritionArray: IntArray
     private var isPale = false
+    private var isViewingPies = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +118,7 @@ class DisplayTextActivity : AppCompatActivity() {
         )
 
         // Set up bottom navigation
+        bottom_navigation_main.selectedItemId = R.id.placeholder
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {
@@ -145,27 +148,33 @@ class DisplayTextActivity : AppCompatActivity() {
             }
         }
 
+        // Set appbar
         topAppBar.setNavigationOnClickListener {
             onBackPressed()
         }
 
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.graph -> {
+                R.id.piesMenuItem -> {
                     // Handle graph icon press
-                    if (nutrientPiesScrollView.isVisible) {
-                        nutrientPiesScrollView.visibility = View.INVISIBLE
-                        nutrientScrollView.visibility = View.VISIBLE
-                    } else {
-                        nutrientPiesScrollView.visibility = View.VISIBLE
-                        nutrientScrollView.visibility = View.INVISIBLE
-                    }
+                    isViewingPies = true
+                    nutrientPiesScrollView.visibility = View.VISIBLE
+                    nutrientScrollView.visibility = View.INVISIBLE
+                    topAppBar.menu.findItem(R.id.piesMenuItem).isVisible = false
+                    topAppBar.menu.findItem(R.id.listMenuItem).isVisible = true
+                    true
+                }
+                R.id.listMenuItem -> {
+                    isViewingPies = false
+                    nutrientPiesScrollView.visibility = View.INVISIBLE
+                    nutrientScrollView.visibility = View.VISIBLE
+                    topAppBar.menu.findItem(R.id.piesMenuItem).isVisible = true
+                    topAppBar.menu.findItem(R.id.listMenuItem).isVisible = false
                     true
                 }
                 else -> false
             }
         }
-
     }
 
     // Called when "+ Scan" button is pressed, creates MainActivity

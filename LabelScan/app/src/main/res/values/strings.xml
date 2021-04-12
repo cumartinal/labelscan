@@ -18,11 +18,13 @@
     <string name="preference_option_theme_pale">Pale</string>
     <string name="preference_option_theme_system">System</string>
     <string name="page_title">New Scan</string>
-    <string name="view_graph">View graph</string>
-    <string name="content_description_view_graph">View graph</string>
+    <string name="view_pies">View pie charts</string>
+    <string name="content_description_view_pies">View pie charts</string>
     <string name="decorative_placeholder">Decorative placeholder</string>
     <string name="bottom_navigation_bar">Bottom navigation bar</string>
     <string name="top_app_bar">Top toolbar</string>
     <string name="app_bar_navigation">Return to scan screen</string>
     <string name="gallery_button_desc">Choose image from gallery</string>
+    <string name="view_list">View nutrients in list</string>
+    <string name="content_description_view_list">View nutrients as list</string>
 </resources>

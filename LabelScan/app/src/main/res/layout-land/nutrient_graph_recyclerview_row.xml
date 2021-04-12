@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/graphNutrientName"
         style="@style/TextAppearance.MdcTypographyStyles.Headline6"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:gravity="start"
