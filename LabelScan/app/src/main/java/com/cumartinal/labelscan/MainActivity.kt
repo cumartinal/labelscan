@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -148,6 +149,21 @@ class MainActivity : AppCompatActivity() {
                 .setCancelable(false)
                 .create()
 
+        // Handle shared images to the app
+        when (intent?.action) {
+            Intent.ACTION_SEND -> {
+                if (intent.type?.startsWith("image/") == true) {
+                    (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
+                        // Update UI to reflect image being shared
+                        analyze(it)
+                    }
+                }
+            }
+            else -> {
+                // Handle other intents, such as being started from the home screen
+            }
+        }
+
     }
 
     override fun onResume() {
@@ -156,6 +172,7 @@ class MainActivity : AppCompatActivity() {
         // Avoid viewFinder being frozen after coming back from DisplayTextActivity
         frozen_view.visibility = View.INVISIBLE
         viewFinder.visibility = View.VISIBLE
+
     }
 
     private fun takePhoto() {
