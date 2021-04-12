@@ -7,23 +7,13 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
-import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.github.mikephil.charting.charts.HorizontalBarChart
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_display_text.*
-import kotlinx.android.synthetic.main.activity_display_text.bottom_navigation_main
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class DisplayTextActivity : AppCompatActivity() {
@@ -41,8 +31,7 @@ class DisplayTextActivity : AppCompatActivity() {
         // Color value to pass to RecyclerAdapterPies
         // Apply theme depending on saved preference
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
-        val themingValue = sharedPreferences.getString("theming", "")
-        when (themingValue) {
+        when (sharedPreferences.getString("theming", "")) {
             "Light" -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 setTheme(R.style.Theme_LabelScan)
@@ -89,14 +78,14 @@ class DisplayTextActivity : AppCompatActivity() {
         // Transparency effect will change depending on theme
         // Dark theme needs to have the pie background be lighter than the actual background
         // Light and pale theme need to have it darker (alpha increased)
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+        backgroundColor = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                backgroundColor = Color.argb(255,
+                Color.argb(255,
                         Color.red(backgroundColor) + 40, Color.green(backgroundColor) + 40,
                         Color.blue(backgroundColor) + 40)
             }
             else -> {
-                backgroundColor = Color.argb(12, Color.red(backgroundColor), Color.green(backgroundColor), Color.blue(backgroundColor))
+                Color.argb(12, Color.red(backgroundColor), Color.green(backgroundColor), Color.blue(backgroundColor))
             }
         }
         val isMotionReduced = (sharedPreferences.getBoolean("reducedMotion", false))
@@ -106,14 +95,14 @@ class DisplayTextActivity : AppCompatActivity() {
         // Add dividers between items on recyclerviews
         nutrientRecyclerView.addItemDecoration(
             CustomDividerItemDecoration(
-                nutrientRecyclerView.getContext(),
-                linearLayoutManager.getOrientation()
+                nutrientRecyclerView.context,
+                linearLayoutManager.orientation
             )
         )
         nutrientPiesRecyclerView.addItemDecoration(
             CustomDividerItemDecoration(
-                nutrientPiesRecyclerView.getContext(),
-                linearLayoutManager.getOrientation()
+                nutrientPiesRecyclerView.context,
+                linearLayoutManager.orientation
             )
         )
 
@@ -148,11 +137,10 @@ class DisplayTextActivity : AppCompatActivity() {
             }
         }
 
-        // Set appbar
+        // Set appbar listeners
         topAppBar.setNavigationOnClickListener {
             onBackPressed()
         }
-
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.piesMenuItem -> {
@@ -185,7 +173,7 @@ class DisplayTextActivity : AppCompatActivity() {
             mediaPlayerNavigationScan.start()
         }
         val intent = Intent(this, MainActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         startActivityIfNeeded(intent, 0)
     }
 

@@ -13,12 +13,12 @@ class RecyclerAdapter(private val nutritionArray: IntArray) :
     // Possible values include: kcal, totFat, satFat, traFat
     // cholesterol, sodium, totCarbs, fiber, sugars, protein
     // vitD, calcium, iron, potassium
-    val nutrientNames = arrayOf("Calories", "Total fat", "Saturated fat", "Trans fat",
+    private val nutrientNames = arrayOf("Calories", "Total fat", "Saturated fat", "Trans fat",
                                 "Cholesterol", "Sodium", "Total carbohydrates", "Fiber",
                                 "Sugars", "Protein", "Vitamin D", "Calcium", "Iron",
                                 "Potassium")
     // Make array with units of nutrients
-    val nutrientUnits = arrayOf("kcal","g", "g", "g", "mg", "mg", "g", "g", "g", "g",
+    private val nutrientUnits = arrayOf("kcal","g", "g", "g", "mg", "mg", "g", "g", "g", "g",
                                 "mcg", "mg", "mg", "mg")
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -44,6 +44,10 @@ class RecyclerAdapter(private val nutritionArray: IntArray) :
         if (nutritionArray != null) {
             viewHolder.nutrientTextView.text = nutrientNames.get(position)
             viewHolder.valueTextView.text = nutritionArray.get(position).toString()  + nutrientUnits.get(position)
+
+            // Talkback does not automatically read mcg as micrograms, so we need to specify it manually
+            if (nutrientUnits.get(position) == "mcg")
+                viewHolder.valueTextView.contentDescription = nutritionArray.get(position).toString() + "micrograms"
         }
 
     }

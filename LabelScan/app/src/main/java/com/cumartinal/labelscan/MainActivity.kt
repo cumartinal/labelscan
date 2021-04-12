@@ -1,7 +1,6 @@
 package com.cumartinal.labelscan
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
@@ -48,16 +47,16 @@ class MainActivity : AppCompatActivity() {
     private var backPressedTimeStamp = 0.toLong()
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        // Handle the returned URI
+        // Send uri as image to be analysed
         analyze(uri)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         // Apply theme depending on saved preference
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
-        val themingValue = sharedPreferences.getString("theming", "")
-        when (themingValue) {
+        when (sharedPreferences.getString("theming", "")) {
             "Light" -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 setTheme(R.style.Theme_LabelScan)
@@ -139,17 +138,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // outputDirectory for saving photos
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+        // Dialog that appears when analysing a label
         analysisProgressDialog = MaterialAlertDialogBuilder(this@MainActivity)
                 .setTitle("Analysing label")
                 .setMessage("Please wait...")
                 .setCancelable(false)
                 .create()
 
-        // Handle shared images to the app
+        // Handle shared images to the app from an external application
         when (intent?.action) {
             Intent.ACTION_SEND -> {
                 if (intent.type?.startsWith("image/") == true) {
@@ -199,7 +200,7 @@ class MainActivity : AppCompatActivity() {
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
          */
 
-        // Set up image capture listener, which is triggered after photo has
+        // Set up image capture callback, which is triggered after photo has
         // been taken
         imageCapture.takePicture(ContextCompat.getMainExecutor(this),
                 object : ImageCapture.OnImageCapturedCallback() {
@@ -223,7 +224,7 @@ class MainActivity : AppCompatActivity() {
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
-            // Preview
+            // Preview of camera
             val preview = Preview.Builder()
                     .build()
                     .also {
@@ -247,7 +248,7 @@ class MainActivity : AppCompatActivity() {
 
                 val cameraControl = camera.cameraControl
 
-                // Code from https://proandroiddev.com/android-camerax-tap-to-focus-pinch-to-zoom-zoom-slider-eb88f3aa6fc6
+                // Modified Code from https://proandroiddev.com/android-camerax-tap-to-focus-pinch-to-zoom-zoom-slider-eb88f3aa6fc6
                 // Listen to tap events on the viewfinder and set them as focus regions
                 viewFinder.setOnTouchListener(View.OnTouchListener setOnTouchListener@{ view: View, motionEvent: MotionEvent ->
                     when (motionEvent.action) {
@@ -294,7 +295,7 @@ class MainActivity : AppCompatActivity() {
 
             // Pass image to an ML Kit Vision API
             val recognizer = TextRecognition.getClient()
-            val result = recognizer.process(image)
+            recognizer.process(image)
                     .addOnSuccessListener { visionText ->
                         // Task completed successfully
                         Log.d("TAG", visionText.text)
@@ -314,8 +315,9 @@ class MainActivity : AppCompatActivity() {
 
     // Method that passes a photo URI to MLKit to extract the text
     // Called instead of analyze(ImageProxy) when the user presses the gallery_button
+    // Inner lines are the same as analyze(ImageProxy)
     private fun analyze(uri: Uri?) {
-        // Create alert
+        // Create alert as it's not tied to camera button
         analysisProgressDialog.show()
 
         // Show progress indicator
@@ -329,7 +331,7 @@ class MainActivity : AppCompatActivity() {
 
             // Pass image to an ML Kit Vision API
             val recognizer = TextRecognition.getClient()
-            val result = recognizer.process(image)
+            recognizer.process(image)
                     .addOnSuccessListener { visionText ->
                         // Task completed successfully
                         Log.d("TAG", visionText.text)
@@ -355,9 +357,11 @@ class MainActivity : AppCompatActivity() {
         val nutritionArray = IntArray(14) { i -> 0}
         var hasNutritionalInformation = false
 
-        // Parses through lines checking if they have text for a nutrient
+        // Parses through lines checking if they have text for a nutrient.
         // If so, only takes the FIRST numerical value
-        // To avoid reading percentages or text like "2,000 calories"
+        // to avoid reading percentages or text like "2,000 calories".
+        // It also checks that the number is not too big and that we have not accidentally annexed
+        // another, separate value (like percentages).
         for ((index, block) in visionText.textBlocks.withIndex()) {
             for (line in block.lines) {
 
@@ -562,6 +566,7 @@ class MainActivity : AppCompatActivity() {
             requestCode: Int, permissions: Array<String>, grantResults:
             IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
@@ -593,7 +598,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    // Double tap back to exit
+    // Double tap back to exit override
+    // Enables doubletapping to exit if it's enabled in settings
     override fun onBackPressed() {
         Log.d("CDA", "onBackPressed Called")
         // Have we enabled double tap?

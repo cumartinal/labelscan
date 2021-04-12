@@ -1,19 +1,15 @@
 package com.cumartinal.labelscan
 
-import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.HorizontalBarChart
-import com.github.mikephil.charting.data.*
-import kotlinx.android.synthetic.main.activity_main.*
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import kotlin.math.roundToInt
 
 class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPale: Boolean,
@@ -24,7 +20,7 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
     // Possible values include: kcal, totFat, satFat, traFat
     // cholesterol, sodium, totCarbs, fiber, sugars, protein
     // vitD, calcium, iron, potassium
-    val nutrientNames = arrayOf("Calories", "Total fat", "Saturated fat", "Trans fat",
+    private val nutrientNames = arrayOf("Calories", "Total fat", "Saturated fat", "Trans fat",
         "Cholesterol", "Sodium", "Total carbohydrates", "Fiber",
         "Sugars", "Protein", "Vitamin D", "Calcium", "Iron",
         "Potassium")
@@ -34,7 +30,7 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
     // Make array with daily values
     // Daily values taken from:
     // https://www.fda.gov/food/new-nutrition-facts-label/daily-value-new-nutrition-and-supplement-facts-labels
-    val nutrientDVs = arrayOf(2000f, 78f, 20f, 2f, 300f, 2300f, 275f, 28f, 50f, 50f, 20f,
+    private val nutrientDVs = arrayOf(2000f, 78f, 20f, 2f, 300f, 2300f, 275f, 28f, 50f, 50f, 20f,
         1300f, 18f, 4700f)
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -58,10 +54,10 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
     // Replace the contents of a view invoked by the layout manager
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         if (nutritionArray != null) {
-            // Create name of nutrient and percentage
+            // Create name of nutrient and percentage, set accessible contentDescriptions
             val percentageDV = (nutritionArray[position] / nutrientDVs[position]) * 100
             viewHolder.nutrientTextView.text = nutrientNames.get(position) + "\n" + "DV: " + percentageDV.roundToInt() + "%"
-            viewHolder.nutrientTextView.contentDescription = nutrientNames.get(position) + " Daily Value: " + percentageDV.roundToInt() + "%"
+            viewHolder.nutrientTextView.contentDescription = nutrientNames.get(position) + ", " + percentageDV.roundToInt() + "% of the Daily Value"
 
             // Add entries and create PieDataSet
             val entries: ArrayList<PieEntry> = ArrayList()
@@ -71,35 +67,39 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
             pieDataSet.setDrawIcons(false)
             pieDataSet.setDrawValues(false)
 
-            // Add colors
+            // Add colors depending on theme
             val colors: ArrayList<Int> = ArrayList()
-            var colorToAdd: Int
-            if (percentageDV >= 20) {
-                colorToAdd = if (isPale) {
-                    Color.parseColor("#EF504E")
-                } else {
-                    Color.parseColor("#D50000")
+            val colorToAdd: Int
+            when {
+                percentageDV >= 20 -> {
+                    colorToAdd = if (isPale) {
+                        Color.parseColor("#EF504E")
+                    } else {
+                        Color.parseColor("#D50000")
+                    }
+                    colors.add(colorToAdd)
                 }
-                colors.add(colorToAdd)
-            } else if (percentageDV >= 5) {
-                colorToAdd = if (isPale) {
-                    Color.parseColor("#C76400")
-                } else {
-                    Color.parseColor("#F56A00")
+                percentageDV >= 5 -> {
+                    colorToAdd = if (isPale) {
+                        Color.parseColor("#C76400")
+                    } else {
+                        Color.parseColor("#F56A00")
+                    }
+                    colors.add(colorToAdd)
                 }
-                colors.add(colorToAdd)
-            } else {
-                colorToAdd = if (isPale) {
-                    Color.parseColor("#558B2F")
-                } else {
-                    Color.parseColor("#33691E")
+                else -> {
+                    colorToAdd = if (isPale) {
+                        Color.parseColor("#558B2F")
+                    } else {
+                        Color.parseColor("#33691E")
+                    }
+                    colors.add(colorToAdd)
                 }
-                colors.add(colorToAdd)
             }
             colors.add(backgroundColor)
             pieDataSet.colors = colors
 
-            // Cuestomise appearance and interaction
+            // Customise appearance and disable direct interaction
             viewHolder.nutrientPieView.data = PieData(pieDataSet)
             viewHolder.nutrientPieView.isDrawHoleEnabled = false
             viewHolder.nutrientPieView.holeRadius = 10f

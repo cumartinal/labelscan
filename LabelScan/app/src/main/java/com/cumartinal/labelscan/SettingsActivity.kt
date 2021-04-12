@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
-import androidx.core.app.ActivityCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -25,8 +24,7 @@ class SettingsActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         // Apply theme depending on saved preference
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val themingValue = sharedPreferences.getString("theming", "")
-        when (themingValue) {
+        when (sharedPreferences.getString("theming", "")) {
             "Light" -> {
                 setDefaultNightMode(MODE_NIGHT_NO)
                 setTheme(R.style.Theme_LabelScan)
@@ -70,11 +68,12 @@ class SettingsActivity : AppCompatActivity(),
                 .replace(R.id.settings_container, MySettingsFragment())
                 .commit()
 
+        // Change current screen and overall app theme
         listener =
                 SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences: SharedPreferences, key: String ->
                     if (key == "theming") {
                         val preferenceValue = sharedPreferences.getString(key, "")
-                        Log.i(TAG, "Theming preference value was updated to: " + preferenceValue)
+                        Log.i(TAG, "Theming preference value was updated to: $preferenceValue")
 
                         when (preferenceValue) {
                             "Light" -> {
@@ -144,25 +143,6 @@ class SettingsActivity : AppCompatActivity(),
         return true
     }
 
-    /*
-    // Apply preferences when change
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == "theming") {
-            val preferenceValue = sharedPreferences.getString(key, "")
-            Log.i(TAG, "Theming preference value was updated to: " + preferenceValue)
-
-            when (preferenceValue) {
-                "Light" -> setDefaultNightMode(MODE_NIGHT_NO)
-                "Dark" -> setDefaultNightMode(MODE_NIGHT_YES)
-                "System" -> setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
-                else -> {
-                    Log.d(TAG, "ERROR CHANGING THEMING, PREFERENCE VALUE DOES NOT EXIST")
-                }
-            }
-        }
-    }
-    */
-
     // Called when "+ Scan" button is pressed, creates MainActivity
     fun newScan(view: View) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
@@ -171,7 +151,7 @@ class SettingsActivity : AppCompatActivity(),
             mediaPlayerNavigationScan.start()
         }
         val intent = Intent(this, MainActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         startActivityIfNeeded(intent, 0)
     }
 
