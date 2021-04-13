@@ -567,7 +567,7 @@ class MainActivity : AppCompatActivity() {
         // If "g" is not present, it means it has wrongly been interpreted as a 9
         // So we need to drop it so the value is right
         if (!isGPresent) {
-            numberToTake.dropLast(1)
+            numberToTake = numberToTake.dropLast(1)
         }
         return numberToTake.take(digitsToTake).toInt()
     }
