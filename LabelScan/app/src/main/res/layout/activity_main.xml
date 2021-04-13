@@ -98,6 +98,7 @@
         app:maxImageSize="32dp"
         app:fabCustomSize="75dp"
         app:tint="@color/black"
+        app:rippleColor="@color/custom_rippleColor"
         app:layout_anchor="@id/bottomAppBar"
         app:layout_anchorGravity="center_horizontal"
         app:srcCompat="@drawable/baseline_camera_alt_24" />

@@ -24,6 +24,7 @@
     <color name="custom_textColorPrimary">#89000000</color>
     <color name="custom_colorBackground_pale">#FFEDEDED</color>
     <color name="custom_colorOnSurface">#99FFFFFF</color>
+    <color name="custom_rippleColor">#44000000</color>
 
     <color name="green_medium_split_comp1">#FF843000</color>
     <color name="green_medium_split_comp2">#FF840023</color>
