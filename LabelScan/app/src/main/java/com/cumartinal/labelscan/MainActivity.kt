@@ -352,9 +352,9 @@ class MainActivity : AppCompatActivity() {
 
         // Create array that will hold all the nutritional information
         // Possible values include: kcal, totFat, satFat, traFat
-        // cholesterol, sodium, totCarbs, fiber, sugars, protein
+        // cholesterol, sodium, totCarbs, fiber, totSugars, addSugars protein
         // vitD, calcium, iron, potassium
-        val nutritionArray = IntArray(14) { i -> 0}
+        val nutritionArray = IntArray(15) { i -> 0}
         var hasNutritionalInformation = false
 
         // Parses through lines checking if they have text for a nutrient.
@@ -463,7 +463,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                if (line.text.contains("Protein")) {
+                if (line.text.contains("Added Sugars")) {
                     for (element in line.elements) {
                         if (nutritionArray[9] == 0 && element.text.any { it.isDigit() }) {
                             nutritionArray[9] = (element.text.filter { it.isDigit() }).take(2).toInt()
@@ -472,7 +472,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                if (line.text.contains("Vitamin D")) {
+                if (line.text.contains("Protein")) {
                     for (element in line.elements) {
                         if (nutritionArray[10] == 0 && element.text.any { it.isDigit() }) {
                             nutritionArray[10] = (element.text.filter { it.isDigit() }).take(2).toInt()
@@ -481,10 +481,19 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                if (line.text.contains("Calcium")) {
+                if (line.text.contains("Vitamin D")) {
                     for (element in line.elements) {
                         if (nutritionArray[11] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[11]  = (element.text.filter { it.isDigit() }).take(4).toInt()
+                            nutritionArray[11] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            hasNutritionalInformation = true
+                        }
+                    }
+                }
+
+                if (line.text.contains("Calcium")) {
+                    for (element in line.elements) {
+                        if (nutritionArray[12] == 0 && element.text.any { it.isDigit() }) {
+                            nutritionArray[12]  = (element.text.filter { it.isDigit() }).take(4).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -492,8 +501,8 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Iron")) {
                     for (element in line.elements) {
-                        if (nutritionArray[12] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[12] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                        if (nutritionArray[13] == 0 && element.text.any { it.isDigit() }) {
+                            nutritionArray[13] = (element.text.filter { it.isDigit() }).take(2).toInt()
                             hasNutritionalInformation = true
                         }
                     }
@@ -501,8 +510,8 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Potassium")) {
                     for (element in line.elements) {
-                        if (nutritionArray[13] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[13] = (element.text.filter { it.isDigit() }).take(4).toInt()
+                        if (nutritionArray[14] == 0 && element.text.any { it.isDigit() }) {
+                            nutritionArray[14] = (element.text.filter { it.isDigit() }).take(4).toInt()
                             hasNutritionalInformation = true
                         }
                     }

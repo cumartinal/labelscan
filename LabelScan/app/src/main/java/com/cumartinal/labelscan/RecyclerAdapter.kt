@@ -15,10 +15,10 @@ class RecyclerAdapter(private val nutritionArray: IntArray) :
     // vitD, calcium, iron, potassium
     private val nutrientNames = arrayOf("Calories", "Total fat", "Saturated fat", "Trans fat",
                                 "Cholesterol", "Sodium", "Total carbohydrates", "Fiber",
-                                "Sugars", "Protein", "Vitamin D", "Calcium", "Iron",
+                                "Total Sugars", "Added Sugars", "Protein", "Vitamin D", "Calcium", "Iron",
                                 "Potassium")
     // Make array with units of nutrients
-    private val nutrientUnits = arrayOf("kcal","g", "g", "g", "mg", "mg", "g", "g", "g", "g",
+    private val nutrientUnits = arrayOf("kcal","g", "g", "g", "mg", "mg", "g", "g", "g", "g", "g",
                                 "mcg", "mg", "mg", "mg")
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

@@ -16,22 +16,29 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
                           private val backgroundColor: Int, private val isMotionReduced: Boolean) :
     RecyclerView.Adapter<RecyclerAdapterPies.ViewHolder>() {
 
-    // Make Array with names of nutrients
-    // Possible values include: kcal, totFat, satFat, traFat
-    // cholesterol, sodium, totCarbs, fiber, sugars, protein
+    // Make Array with names of nutrients THAT HAVE A DAILY VALUE
+    // Possible values include: kcal, totFat, satFat,
+    // cholesterol, sodium, totCarbs, fiber, addSugars, protein
     // vitD, calcium, iron, potassium
-    private val nutrientNames = arrayOf("Calories", "Total fat", "Saturated fat", "Trans fat",
+    private val nutrientNames = arrayOf("Calories", "Total fat", "Saturated fat" ,
         "Cholesterol", "Sodium", "Total carbohydrates", "Fiber",
-        "Sugars", "Protein", "Vitamin D", "Calcium", "Iron",
+        "Added Sugars", "Protein", "Vitamin D", "Calcium", "Iron",
         "Potassium")
     // Make array with units of nutrients
-    val nutrientUnits = arrayOf("kcal","g", "g", "g", "mg", "mg", "g", "g", "g", "g",
+    val nutrientUnits = arrayOf("kcal","g", "g", "mg", "mg", "g", "g", "g", "g",
         "mcg", "mg", "mg", "mg")
     // Make array with daily values
     // Daily values taken from:
     // https://www.fda.gov/food/new-nutrition-facts-label/daily-value-new-nutrition-and-supplement-facts-labels
-    private val nutrientDVs = arrayOf(2000f, 78f, 20f, 2f, 300f, 2300f, 275f, 28f, 50f, 50f, 20f,
+    private val nutrientDVs = arrayOf(2000f, 78f, 20f, 300f, 2300f, 275f, 28f, 50f, 50f, 20f,
         1300f, 18f, 4700f)
+
+    // Create array with only the nutrients that have a related DV
+    // So excluding total sugars (i=8) and trans fat (i=3)
+    private val nutritionPercentageArray = arrayOf(nutritionArray[0], nutritionArray[1],
+            nutritionArray[2], nutritionArray[4], nutritionArray[5], nutritionArray[6],
+            nutritionArray[7], nutritionArray[9], nutritionArray[10], nutritionArray[11],
+            nutritionArray[12], nutritionArray[13], nutritionArray[14])
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nutrientTextView: TextView
@@ -55,7 +62,7 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         if (nutritionArray != null) {
             // Create name of nutrient and percentage, set accessible contentDescriptions
-            val percentageDV = (nutritionArray[position] / nutrientDVs[position]) * 100
+            val percentageDV = (nutritionPercentageArray[position] / nutrientDVs[position]) * 100
             viewHolder.nutrientTextView.text = nutrientNames.get(position) + "\n" + "DV: " + percentageDV.roundToInt() + "%"
             viewHolder.nutrientTextView.contentDescription = nutrientNames.get(position) + ", " + percentageDV.roundToInt() + "% of the Daily Value"
 
@@ -115,8 +122,8 @@ class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPa
     }
 
     override fun getItemCount(): Int {
-        if (nutritionArray != null) {
-            return nutritionArray.size
+        if (nutritionPercentageArray != null) {
+            return nutritionPercentageArray.size
         } else {
             return 0
         }
