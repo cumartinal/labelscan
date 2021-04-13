@@ -392,7 +392,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Total Fat")) {
                     for (element in line.elements) {
                         if (nutritionArray[1] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[1] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[1] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -401,7 +401,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Saturated Fat")) {
                     for (element in line.elements) {
                         if (nutritionArray[2] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[2] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[2] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -410,7 +410,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Trans Fat")) {
                     for (element in line.elements) {
                         if (nutritionArray[3] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[3] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[3] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -419,7 +419,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Cholesterol")) {
                     for (element in line.elements) {
                         if (nutritionArray[4] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[4] = (element.text.filter { it.isDigit() }).take(3).toInt()
+                            nutritionArray[4] = extractValue(3, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -428,7 +428,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Sodium")) {
                     for (element in line.elements) {
                         if (nutritionArray[5] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[5] = (element.text.filter { it.isDigit() }).take(4).toInt()
+                            nutritionArray[5] = extractValue(4, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -437,7 +437,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Carbohydrate")) {
                     for (element in line.elements) {
                         if (nutritionArray[6] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[6] = (element.text.filter { it.isDigit() }).take(3).toInt()
+                            nutritionArray[6] = extractValue(3, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -446,7 +446,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Fiber")) {
                     for (element in line.elements) {
                         if (nutritionArray[7] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[7] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[7] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -457,7 +457,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Sugars")) {
                     for (element in line.elements) {
                         if (nutritionArray[8] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[8] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[8] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -466,7 +466,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Added Sugars")) {
                     for (element in line.elements) {
                         if (nutritionArray[9] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[9] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[9] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -475,7 +475,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Protein")) {
                     for (element in line.elements) {
                         if (nutritionArray[10] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[10] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[10] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -484,7 +484,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Vitamin D")) {
                     for (element in line.elements) {
                         if (nutritionArray[11] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[11] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[11] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -493,7 +493,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Calcium")) {
                     for (element in line.elements) {
                         if (nutritionArray[12] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[12]  = (element.text.filter { it.isDigit() }).take(4).toInt()
+                            nutritionArray[12]  = extractValue(4, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -502,7 +502,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Iron")) {
                     for (element in line.elements) {
                         if (nutritionArray[13] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[13] = (element.text.filter { it.isDigit() }).take(2).toInt()
+                            nutritionArray[13] = extractValue(2, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -511,7 +511,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Potassium")) {
                     for (element in line.elements) {
                         if (nutritionArray[14] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[14] = (element.text.filter { it.isDigit() }).take(4).toInt()
+                            nutritionArray[14] = extractValue(4, element.text)
                             hasNutritionalInformation = true
                         }
                     }
@@ -549,6 +549,27 @@ class MainActivity : AppCompatActivity() {
             // Done last to avoid weird moment with no dialog
             analysisProgressDialog.cancel()
         }
+    }
+
+    // Extracts value from an element.text
+    // Also ensures that the number read is correct
+    // And that a "g" has not been read as a 9
+    private fun extractValue(digitsToTake: Int, element: String): Int {
+        Log.d(TAG, element + " NUMBER BEING PARSED")
+        var numberToTake = ""
+        var isGPresent = false
+        for (char in element) {
+            if (char == 'g')
+                isGPresent = true
+            else if (char.isDigit() && !isGPresent)
+                numberToTake += char
+        }
+        // If "g" is not present, it means it has wrongly been interpreted as a 9
+        // So we need to drop it so the value is right
+        if (!isGPresent) {
+            numberToTake.dropLast(1)
+        }
+        return numberToTake.take(digitsToTake).toInt()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
