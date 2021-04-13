@@ -535,7 +535,7 @@ class MainActivity : AppCompatActivity() {
                     .setTitle("Analysis failed!")
                     .setMessage(
                             "There was no nutritional information in the image." +
-                                    "\nPlease try again"
+                                    "\nPlease try again."
                     )
                     .setPositiveButton("OK") { dialog, which ->
                         if (sharedPreferences.getBoolean("earcons", true)) {
@@ -552,7 +552,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Extracts value from an element.text
-    // Also ensures that the number read is correct
+    // Also ensures that the number read is of correct size
     // And that a "g" has not been read as a 9
     private fun extractValue(digitsToTake: Int, element: String): Int {
         Log.d(TAG, element + " NUMBER BEING PARSED")
