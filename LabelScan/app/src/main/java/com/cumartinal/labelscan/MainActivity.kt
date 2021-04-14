@@ -545,6 +545,10 @@ class MainActivity : AppCompatActivity() {
                         viewFinder.visibility = View.VISIBLE
                         frozen_view.visibility = View.INVISIBLE
                     }
+                    .setOnCancelListener {
+                        viewFinder.visibility = View.VISIBLE
+                        frozen_view.visibility = View.INVISIBLE
+                    }
                     .show()
             // Done last to avoid weird moment with no dialog
             analysisProgressDialog.cancel()
