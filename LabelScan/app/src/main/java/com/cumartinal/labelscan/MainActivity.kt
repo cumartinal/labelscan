@@ -355,6 +355,7 @@ class MainActivity : AppCompatActivity() {
         // cholesterol, sodium, totCarbs, fiber, totSugars, addSugars protein
         // vitD, calcium, iron, potassium
         val nutritionArray = FloatArray(15) { i -> 0.0f}
+        val isNutritionElementChanged = BooleanArray(15) { i -> false}
         var hasNutritionalInformation = false
 
         // Parses through lines checking if they have text for a nutrient.
@@ -389,64 +390,93 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                if (line.text.contains("Total Fat")) {
+                if (line.text.contains("Total Fat", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[1] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Total", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[1] && element.text.any { it.isDigit() }) {
                             nutritionArray[1] = extractValue(2, element.text, 1)
+                            isNutritionElementChanged[1] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Saturated Fat")) {
+                if (line.text.contains("Saturated Fat", true)
+                        || line.text.contains("Sat", true) && line.text.contains("Fat", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[2] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Sat", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[2] && element.text.any { it.isDigit() }) {
                             nutritionArray[2] = extractValue(2, element.text, 2)
+                            isNutritionElementChanged[2] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Trans Fat")) {
+                if (line.text.contains("Trans Fat", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[3] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Trans", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[3] && element.text.any { it.isDigit() }) {
                             nutritionArray[3] = extractValue(2, element.text, 3)
+                            isNutritionElementChanged[3] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Cholesterol")) {
+                if (line.text.contains("Cholest", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[4] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Cholest", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[4] && element.text.any { it.isDigit() }) {
                             nutritionArray[4] = extractValue(3, element.text, 4)
+                            isNutritionElementChanged[4] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Sodium")) {
+                if (line.text.contains("Sodium", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[5] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Sodium", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[5] && element.text.any { it.isDigit() }) {
                             nutritionArray[5] = extractValue(4, element.text, 5)
+                            isNutritionElementChanged[5] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Carbohydrate")) {
+                if (line.text.contains("Carb", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[6] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Carb", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[6] && element.text.any { it.isDigit() }) {
                             nutritionArray[6] = extractValue(3, element.text, 6)
+                            isNutritionElementChanged[6] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Fiber")) {
+                if (line.text.contains("Fiber", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[7] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Fiber", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[7] && element.text.any { it.isDigit() }) {
                             nutritionArray[7] = extractValue(2, element.text, 7)
+                            isNutritionElementChanged[7] = true
                             hasNutritionalInformation = true
                         }
                     }
@@ -454,64 +484,109 @@ class MainActivity : AppCompatActivity() {
 
                 // Recognises Total Sugars thanks to nutritionArray[8] == 0, taking the first line
                 // With 'sugars' and a related value
-                if (line.text.contains("Sugars")) {
+                if (line.text.contains("Sugars", true) && !line.text.contains("Added", true)
+                        || line.text.contains("Total Sugars", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[8] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Sugars", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[8] && element.text.any { it.isDigit() }) {
                             nutritionArray[8] = extractValue(2, element.text, 8)
+                            isNutritionElementChanged[8] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Added Sugars")) {
+                if (line.text.contains("Added Sugars", true)) {
+                    // Added sugars does not use isAfterNutrientName because FDA standards explain
+                    // That this element is written as "Includes Xg Added Sugars"
+                    // So it finds "Added" and checks the word before
+                    var i = -1
+                    var hasSeenNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[9] == 0.0f && element.text.any { it.isDigit() }) {
+                        i++
+                        if (element.text.contains("Added", true)) {
+                            hasSeenNutrientName = true
+                            if (line.elements[i-1].text.any { it.isDigit() }) {
+                                nutritionArray[9] = extractValue(2, line.elements[i-1].text, 9)
+                                isNutritionElementChanged[9] = true
+                            }
+                        }
+                        if (!isNutritionElementChanged[9] && hasSeenNutrientName && element.text.any { it.isDigit() }) {
                             nutritionArray[9] = extractValue(2, element.text, 9)
+                            isNutritionElementChanged[9] = true
+                            if (isNutritionElementChanged[8] && nutritionArray[9] > nutritionArray[8]) {
+                                nutritionArray[9] = nutritionArray[8]
+                            } else if (!isNutritionElementChanged[8]) {
+                                nutritionArray[8] = nutritionArray[9]
+                            }
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Protein")) {
+                if (line.text.contains("Protein", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[10] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Protein", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[10] && element.text.any { it.isDigit() }) {
                             nutritionArray[10] = extractValue(2, element.text, 10)
+                            isNutritionElementChanged[10] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Vitamin D")) {
+                if (line.text.contains("Vitamin D", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[11] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("D", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[11] && element.text.any { it.isDigit() }) {
                             nutritionArray[11] = extractValue(2, element.text, 11)
+                            isNutritionElementChanged[11] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Calcium")) {
+                if (line.text.contains("Calcium", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[12] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Calcium", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[12] && element.text.any { it.isDigit() }) {
                             nutritionArray[12]  = extractValue(4, element.text, 12)
+                            isNutritionElementChanged[12] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Iron")) {
+                if (line.text.contains("Iron", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[13] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Iron", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[13] && element.text.any { it.isDigit() }) {
                             nutritionArray[13] = extractValue(2, element.text, 13)
+                            isNutritionElementChanged[13] = true
                             hasNutritionalInformation = true
                         }
                     }
                 }
 
-                if (line.text.contains("Potassium")) {
+                // Potassium gets cut to Potas. in shortened labels
+                if (line.text.contains("Potas", true)) {
+                    var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (nutritionArray[14] == 0.0f && element.text.any { it.isDigit() }) {
+                        if (element.text.contains("Potas", true))
+                            isAfterNutrientName = true
+                        if (isAfterNutrientName && !isNutritionElementChanged[14] && element.text.any { it.isDigit() }) {
                             nutritionArray[14] = extractValue(4, element.text, 14)
+                            isNutritionElementChanged[14] = true
                             hasNutritionalInformation = true
                         }
                     }
@@ -559,7 +634,6 @@ class MainActivity : AppCompatActivity() {
     // Also ensures that the number read is of correct size
     // And that a "g" has not been read as a 9
     private fun extractValue(digitsToTake: Int, element: String, correspondingArray: Int): Float {
-        Log.d(TAG, element + " NUMBER BEING PARSED")
         var numberToTake = ""
         var isGPresent = false
         var hasDecimals = false
@@ -573,7 +647,7 @@ class MainActivity : AppCompatActivity() {
             return if (percentageDV == 0)
                 0.0f
             else
-                (nutrientDVs[correspondingArray] / percentageDV).toFloat()
+                nutrientDVs[correspondingArray]*(percentageDV/100)
         }
 
         for (char in element) {
@@ -592,14 +666,12 @@ class MainActivity : AppCompatActivity() {
             if (numberToTake.length != 1)
                 numberToTake = numberToTake.dropLast(1)
         }
-        Log.d(TAG, numberToTake + " NUMBER PARSED")
-        if (hasDecimals)
-             return numberToTake.toFloat()
-        // Don't return an empty string
-        else if (numberToTake.length == 1)
-             return numberToTake.toFloat()
-        else
-            return numberToTake.take(digitsToTake).toFloat()
+        return when {
+            hasDecimals -> numberToTake.toFloat()
+            // Don't return an empty string
+            numberToTake.length == 1 -> numberToTake.toFloat()
+            else -> numberToTake.take(digitsToTake).toFloat()
+        }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
