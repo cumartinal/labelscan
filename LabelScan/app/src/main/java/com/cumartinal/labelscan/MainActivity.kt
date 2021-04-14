@@ -48,7 +48,9 @@ class MainActivity : AppCompatActivity() {
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         // Send uri as image to be analysed
-        analyze(uri)
+        // Check that it isn't null to avoid crashes
+        if (uri != null)
+            analyze(uri)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
