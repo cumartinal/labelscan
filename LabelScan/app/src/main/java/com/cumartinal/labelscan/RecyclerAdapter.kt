@@ -49,8 +49,13 @@ class RecyclerAdapter(private val nutritionArray: FloatArray) :
                 viewHolder.valueTextView.text = nutritionArray[position].toString() + nutrientUnits[position]
             }
             // Talkback does not automatically read mcg as micrograms, so we need to specify it manually
-            if (nutrientUnits[position] == "mcg")
-                viewHolder.valueTextView.contentDescription = nutritionArray[position].toString() + "micrograms"
+            if (nutrientUnits[position] == "mcg") {
+                if (nutritionArray[position].rem(1) == 0.0f)
+                    viewHolder.valueTextView.contentDescription = nutritionArray[position].toInt().toString() + "micrograms"
+                else
+                    viewHolder.valueTextView.contentDescription = nutritionArray[position].toString() + "micrograms"
+            }
+
         }
 
     }
