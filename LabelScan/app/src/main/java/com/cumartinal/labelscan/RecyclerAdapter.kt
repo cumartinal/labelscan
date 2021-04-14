@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.text.DecimalFormat
+import kotlin.math.roundToInt
 
 class RecyclerAdapter(private val nutritionArray: FloatArray) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
@@ -45,7 +47,8 @@ class RecyclerAdapter(private val nutritionArray: FloatArray) :
         if (nutritionArray[position].rem(1) == 0.0f) {
             viewHolder.valueTextView.text = nutritionArray[position].toInt().toString() + nutrientUnits[position]
         } else {
-            viewHolder.valueTextView.text = nutritionArray[position].toString() + nutrientUnits[position]
+            val roundedValue = (nutritionArray[position] * 10.0f).roundToInt() / 10.0f
+            viewHolder.valueTextView.text = roundedValue.toString() + nutrientUnits[position]
         }
 
         // Talkback does not automatically read mcg as micrograms, so we need to specify it manually

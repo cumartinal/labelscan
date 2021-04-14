@@ -654,8 +654,9 @@ class MainActivity : AppCompatActivity() {
         if ("%" in element) {
             val nutrientDVs = arrayOf(2000f, 78f, 20f, 1f, 300f, 2300f, 275f, 28f, 1f, 50f, 50f, 20f,
                     1300f, 18f, 4700f)
-            val percentageDV = element.filter { it.isDigit() }.toInt()
-            return if (percentageDV == 0)
+            val percentageDV = element.filter { it.isDigit() }.toFloat()
+            Log.d(TAG, percentageDV.toString() + " PERCENTAGE DV Y'ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
+            return if (percentageDV == 0.0f)
                 0.0f
             else
                 nutrientDVs[correspondingArray]*(percentageDV/100)
