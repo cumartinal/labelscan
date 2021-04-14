@@ -393,8 +393,12 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Total Fat", true)) {
                     var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (element.text.contains("Total", true))
+                        if (element.text.contains("Total", true)) {
                             isAfterNutrientName = true
+                            // We continue as total fat is two separate words, reducing the risk
+                            // That the actual value has collated into the nutrition word
+                            continue
+                        }
                         if (isAfterNutrientName && !isNutritionElementChanged[1] && element.text.any { it.isDigit() }) {
                             nutritionArray[1] = extractValue(2, element.text, 1)
                             isNutritionElementChanged[1] = true
@@ -407,8 +411,10 @@ class MainActivity : AppCompatActivity() {
                         || line.text.contains("Sat", true) && line.text.contains("Fat", true)) {
                     var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (element.text.contains("Sat", true))
+                        if (element.text.contains("Sat", true)) {
                             isAfterNutrientName = true
+                            continue
+                        }
                         if (isAfterNutrientName && !isNutritionElementChanged[2] && element.text.any { it.isDigit() }) {
                             nutritionArray[2] = extractValue(2, element.text, 2)
                             isNutritionElementChanged[2] = true
@@ -420,8 +426,10 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Trans Fat", true)) {
                     var isAfterNutrientName = false
                     for (element in line.elements) {
-                        if (element.text.contains("Trans", true))
+                        if (element.text.contains("Trans", true)) {
                             isAfterNutrientName = true
+                            continue
+                        }
                         if (isAfterNutrientName && !isNutritionElementChanged[3] && element.text.any { it.isDigit() }) {
                             nutritionArray[3] = extractValue(2, element.text, 3)
                             isNutritionElementChanged[3] = true
