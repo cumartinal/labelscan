@@ -41,31 +41,26 @@ class RecyclerAdapter(private val nutritionArray: FloatArray) :
 
     // Replace the contents of a view invoked by the layout manager
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        if (nutritionArray != null) {
-            viewHolder.nutrientTextView.text = nutrientNames[position]
-            if (nutritionArray[position].rem(1) == 0.0f) {
-                viewHolder.valueTextView.text = nutritionArray[position].toInt().toString() + nutrientUnits[position]
-            } else {
-                viewHolder.valueTextView.text = nutritionArray[position].toString() + nutrientUnits[position]
-            }
-            // Talkback does not automatically read mcg as micrograms, so we need to specify it manually
-            if (nutrientUnits[position] == "mcg") {
-                if (nutritionArray[position].rem(1) == 0.0f)
-                    viewHolder.valueTextView.contentDescription = nutritionArray[position].toInt().toString() + "micrograms"
-                else
-                    viewHolder.valueTextView.contentDescription = nutritionArray[position].toString() + "micrograms"
-            }
+        viewHolder.nutrientTextView.text = nutrientNames[position]
+        if (nutritionArray[position].rem(1) == 0.0f) {
+            viewHolder.valueTextView.text = nutritionArray[position].toInt().toString() + nutrientUnits[position]
+        } else {
+            viewHolder.valueTextView.text = nutritionArray[position].toString() + nutrientUnits[position]
+        }
 
+        // Talkback does not automatically read mcg as micrograms, so we need to specify it manually
+        if (nutrientUnits[position] == "mcg") {
+            // Avoid reading 0.0 mcg, just read 0 mcg
+            if (nutritionArray[position].rem(1) == 0.0f)
+                viewHolder.valueTextView.contentDescription = nutritionArray[position].toInt().toString() + "micrograms"
+            else
+                viewHolder.valueTextView.contentDescription = nutritionArray[position].toString() + "micrograms"
         }
 
     }
 
     override fun getItemCount(): Int {
-        if (nutritionArray != null) {
-            return nutritionArray.size
-        } else {
-            return 0
-        }
+        return nutritionArray.size
     }
 
 }

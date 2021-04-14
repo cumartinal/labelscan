@@ -141,10 +141,10 @@ class DisplayTextActivity : AppCompatActivity() {
         topAppBar.setNavigationOnClickListener {
             onBackPressed()
         }
+        // Change view and shown icon between list and pies
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.piesMenuItem -> {
-                    // Handle graph icon press
                     isViewingPies = true
                     nutrientPiesScrollView.visibility = View.VISIBLE
                     nutrientScrollView.visibility = View.INVISIBLE

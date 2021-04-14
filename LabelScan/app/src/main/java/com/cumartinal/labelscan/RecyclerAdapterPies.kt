@@ -12,7 +12,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import kotlin.math.roundToInt
 
-class RecyclerAdapterPies(private val nutritionArray: FloatArray, private val isPale: Boolean,
+class RecyclerAdapterPies(nutritionArray: FloatArray, private val isPale: Boolean,
                           private val backgroundColor: Int, private val isMotionReduced: Boolean) :
     RecyclerView.Adapter<RecyclerAdapterPies.ViewHolder>() {
 
@@ -24,9 +24,6 @@ class RecyclerAdapterPies(private val nutritionArray: FloatArray, private val is
         "Cholesterol", "Sodium", "Total carbohydrates", "Fiber",
         "Added Sugars", "Protein", "Vitamin D", "Calcium", "Iron",
         "Potassium")
-    // Make array with units of nutrients
-    val nutrientUnits = arrayOf("kcal","g", "g", "mg", "mg", "g", "g", "g", "g",
-        "mcg", "mg", "mg", "mg")
     // Make array with daily values
     // Daily values taken from:
     // https://www.fda.gov/food/new-nutrition-facts-label/daily-value-new-nutrition-and-supplement-facts-labels
@@ -60,73 +57,67 @@ class RecyclerAdapterPies(private val nutritionArray: FloatArray, private val is
 
     // Replace the contents of a view invoked by the layout manager
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        if (nutritionArray != null) {
-            // Create name of nutrient and percentage, set accessible contentDescriptions
-            val percentageDV = (nutritionPercentageArray[position] / nutrientDVs[position]) * 100
-            viewHolder.nutrientTextView.text = nutrientNames.get(position) + "\n" + "DV: " + percentageDV.roundToInt() + "%"
-            viewHolder.nutrientTextView.contentDescription = nutrientNames.get(position) + ", " + percentageDV.roundToInt() + "% of the Daily Value"
+        // Create name of nutrient and percentage, set accessible contentDescriptions
+        val percentageDV = (nutritionPercentageArray[position] / nutrientDVs[position]) * 100
+        viewHolder.nutrientTextView.text = nutrientNames.get(position) + "\n" + "DV: " + percentageDV.roundToInt() + "%"
+        viewHolder.nutrientTextView.contentDescription = nutrientNames.get(position) + ", " + percentageDV.roundToInt() + "% of the Daily Value"
 
-            // Add entries and create PieDataSet
-            val entries: ArrayList<PieEntry> = ArrayList()
-            entries.add(PieEntry(percentageDV, "%"))
-            entries.add(PieEntry(100 - percentageDV, ""))
-            val pieDataSet = PieDataSet(entries, "")
-            pieDataSet.setDrawIcons(false)
-            pieDataSet.setDrawValues(false)
+        // Add entries and create PieDataSet
+        val entries: ArrayList<PieEntry> = ArrayList()
+        entries.add(PieEntry(percentageDV, "%"))
+        entries.add(PieEntry(100 - percentageDV, ""))
+        val pieDataSet = PieDataSet(entries, "")
+        pieDataSet.setDrawIcons(false)
+        pieDataSet.setDrawValues(false)
 
-            // Add colors depending on theme
-            val colors: ArrayList<Int> = ArrayList()
-            val colorToAdd: Int
-            when {
-                percentageDV >= 20 -> {
-                    colorToAdd = if (isPale) {
-                        Color.parseColor("#EF504E")
-                    } else {
-                        Color.parseColor("#D50000")
-                    }
-                    colors.add(colorToAdd)
+        // Add colors depending on theme
+        val colors: ArrayList<Int> = ArrayList()
+        val colorToAdd: Int
+        when {
+            percentageDV >= 20 -> {
+                colorToAdd = if (isPale) {
+                    Color.parseColor("#EF504E")
+                } else {
+                    Color.parseColor("#D50000")
                 }
-                percentageDV >= 5 -> {
-                    colorToAdd = if (isPale) {
-                        Color.parseColor("#C76400")
-                    } else {
-                        Color.parseColor("#F56A00")
-                    }
-                    colors.add(colorToAdd)
-                }
-                else -> {
-                    colorToAdd = if (isPale) {
-                        Color.parseColor("#558B2F")
-                    } else {
-                        Color.parseColor("#33691E")
-                    }
-                    colors.add(colorToAdd)
-                }
+                colors.add(colorToAdd)
             }
-            colors.add(backgroundColor)
-            pieDataSet.colors = colors
-
-            // Customise appearance and disable direct interaction
-            viewHolder.nutrientPieView.data = PieData(pieDataSet)
-            viewHolder.nutrientPieView.isDrawHoleEnabled = false
-            viewHolder.nutrientPieView.holeRadius = 10f
-            viewHolder.nutrientPieView.description.isEnabled = false
-            viewHolder.nutrientPieView.setDrawEntryLabels(false)
-            viewHolder.nutrientPieView.setTouchEnabled(false)
-            viewHolder.nutrientPieView.legend.isEnabled = false
-            if (!isMotionReduced)
-                viewHolder.nutrientPieView.animateY(1400, Easing.EaseInOutQuad)
-            viewHolder.nutrientPieView.invalidate()
+            percentageDV >= 5 -> {
+                colorToAdd = if (isPale) {
+                    Color.parseColor("#C76400")
+                } else {
+                    Color.parseColor("#F56A00")
+                }
+                colors.add(colorToAdd)
+            }
+            else -> {
+                colorToAdd = if (isPale) {
+                    Color.parseColor("#558B2F")
+                } else {
+                    Color.parseColor("#33691E")
+                }
+                colors.add(colorToAdd)
+            }
         }
+        colors.add(backgroundColor)
+        pieDataSet.colors = colors
+
+        // Customise appearance and disable direct interaction
+        viewHolder.nutrientPieView.data = PieData(pieDataSet)
+        viewHolder.nutrientPieView.isDrawHoleEnabled = false
+        viewHolder.nutrientPieView.holeRadius = 10f
+        viewHolder.nutrientPieView.description.isEnabled = false
+        viewHolder.nutrientPieView.setDrawEntryLabels(false)
+        viewHolder.nutrientPieView.setTouchEnabled(false)
+        viewHolder.nutrientPieView.legend.isEnabled = false
+        if (!isMotionReduced)
+            viewHolder.nutrientPieView.animateY(1400, Easing.EaseInOutQuad)
+        viewHolder.nutrientPieView.invalidate()
 
     }
 
     override fun getItemCount(): Int {
-        if (nutritionPercentageArray != null) {
-            return nutritionPercentageArray.size
-        } else {
-            return 0
-        }
+        return nutritionPercentageArray.size
     }
 
 }
