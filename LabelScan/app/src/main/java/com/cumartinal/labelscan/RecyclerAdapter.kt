@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerAdapter(private val nutritionArray: IntArray) :
+class RecyclerAdapter(private val nutritionArray: FloatArray) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     // Make Array with names of nutrients
@@ -42,12 +42,15 @@ class RecyclerAdapter(private val nutritionArray: IntArray) :
     // Replace the contents of a view invoked by the layout manager
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         if (nutritionArray != null) {
-            viewHolder.nutrientTextView.text = nutrientNames.get(position)
-            viewHolder.valueTextView.text = nutritionArray.get(position).toString()  + nutrientUnits.get(position)
-
+            viewHolder.nutrientTextView.text = nutrientNames[position]
+            if (nutritionArray[position].rem(1) == 0.0f) {
+                viewHolder.valueTextView.text = nutritionArray[position].toInt().toString() + nutrientUnits[position]
+            } else {
+                viewHolder.valueTextView.text = nutritionArray[position].toString() + nutrientUnits[position]
+            }
             // Talkback does not automatically read mcg as micrograms, so we need to specify it manually
-            if (nutrientUnits.get(position) == "mcg")
-                viewHolder.valueTextView.contentDescription = nutritionArray.get(position).toString() + "micrograms"
+            if (nutrientUnits[position] == "mcg")
+                viewHolder.valueTextView.contentDescription = nutritionArray[position].toString() + "micrograms"
         }
 
     }

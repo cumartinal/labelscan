@@ -12,7 +12,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import kotlin.math.roundToInt
 
-class RecyclerAdapterPies(private val nutritionArray: IntArray, private val isPale: Boolean,
+class RecyclerAdapterPies(private val nutritionArray: FloatArray, private val isPale: Boolean,
                           private val backgroundColor: Int, private val isMotionReduced: Boolean) :
     RecyclerView.Adapter<RecyclerAdapterPies.ViewHolder>() {
 

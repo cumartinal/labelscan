@@ -354,7 +354,7 @@ class MainActivity : AppCompatActivity() {
         // Possible values include: kcal, totFat, satFat, traFat
         // cholesterol, sodium, totCarbs, fiber, totSugars, addSugars protein
         // vitD, calcium, iron, potassium
-        val nutritionArray = IntArray(15) { i -> 0}
+        val nutritionArray = FloatArray(15) { i -> 0.0f}
         var hasNutritionalInformation = false
 
         // Parses through lines checking if they have text for a nutrient.
@@ -371,19 +371,19 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Calories")) {
                     var isCaloriesInSameLine = false
                     for (element in line.elements) {
-                        if (nutritionArray[0] == 0 && element.text.any { it.isDigit() }) {
-                            nutritionArray[0] = (element.text.filter { it.isDigit() }).take(3).toInt()
+                        if (nutritionArray[0] == 0.0f && element.text.any { it.isDigit() }) {
+                            nutritionArray[0] = (element.text.filter { it.isDigit() }).take(3).toFloat()
                             hasNutritionalInformation = true
                             isCaloriesInSameLine = true
                         }
                     }
                     // Avoid ArrayIndexOutOfBoundsException
                     if (!isCaloriesInSameLine && index != 0 && index < visionText.textBlocks.size) {
-                        if (nutritionArray[0] == 0 && visionText.textBlocks[index + 1].text.any {it.isDigit()}) {
-                            nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).take(3).toInt()
+                        if (nutritionArray[0] == 0.0f && visionText.textBlocks[index - 1].text.any {it.isDigit()}) {
+                            nutritionArray[0] = (visionText.textBlocks[index - 1].text.filter { it.isDigit() }).take(3).toFloat()
                             hasNutritionalInformation = true
-                        } else if (nutritionArray[0] == 0 && visionText.textBlocks[index - 1].text.any {it.isDigit()}) {
-                            nutritionArray[0] = (visionText.textBlocks[index - 1].text.filter { it.isDigit() }).take(3).toInt()
+                        } else if (nutritionArray[0] == 0.0f && visionText.textBlocks[index + 1].text.any {it.isDigit()}) {
+                            nutritionArray[0] = (visionText.textBlocks[index + 1].text.filter { it.isDigit() }).take(3).toFloat()
                             hasNutritionalInformation = true
                         }
                     }
@@ -391,7 +391,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Total Fat")) {
                     for (element in line.elements) {
-                        if (nutritionArray[1] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[1] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[1] = extractValue(2, element.text, 1)
                             hasNutritionalInformation = true
                         }
@@ -400,7 +400,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Saturated Fat")) {
                     for (element in line.elements) {
-                        if (nutritionArray[2] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[2] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[2] = extractValue(2, element.text, 2)
                             hasNutritionalInformation = true
                         }
@@ -409,7 +409,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Trans Fat")) {
                     for (element in line.elements) {
-                        if (nutritionArray[3] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[3] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[3] = extractValue(2, element.text, 3)
                             hasNutritionalInformation = true
                         }
@@ -418,7 +418,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Cholesterol")) {
                     for (element in line.elements) {
-                        if (nutritionArray[4] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[4] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[4] = extractValue(3, element.text, 4)
                             hasNutritionalInformation = true
                         }
@@ -427,7 +427,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Sodium")) {
                     for (element in line.elements) {
-                        if (nutritionArray[5] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[5] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[5] = extractValue(4, element.text, 5)
                             hasNutritionalInformation = true
                         }
@@ -436,7 +436,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Carbohydrate")) {
                     for (element in line.elements) {
-                        if (nutritionArray[6] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[6] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[6] = extractValue(3, element.text, 6)
                             hasNutritionalInformation = true
                         }
@@ -445,7 +445,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Fiber")) {
                     for (element in line.elements) {
-                        if (nutritionArray[7] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[7] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[7] = extractValue(2, element.text, 7)
                             hasNutritionalInformation = true
                         }
@@ -456,7 +456,7 @@ class MainActivity : AppCompatActivity() {
                 // With 'sugars' and a related value
                 if (line.text.contains("Sugars")) {
                     for (element in line.elements) {
-                        if (nutritionArray[8] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[8] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[8] = extractValue(2, element.text, 8)
                             hasNutritionalInformation = true
                         }
@@ -465,7 +465,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Added Sugars")) {
                     for (element in line.elements) {
-                        if (nutritionArray[9] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[9] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[9] = extractValue(2, element.text, 9)
                             hasNutritionalInformation = true
                         }
@@ -474,7 +474,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Protein")) {
                     for (element in line.elements) {
-                        if (nutritionArray[10] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[10] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[10] = extractValue(2, element.text, 10)
                             hasNutritionalInformation = true
                         }
@@ -483,7 +483,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Vitamin D")) {
                     for (element in line.elements) {
-                        if (nutritionArray[11] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[11] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[11] = extractValue(2, element.text, 11)
                             hasNutritionalInformation = true
                         }
@@ -492,7 +492,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Calcium")) {
                     for (element in line.elements) {
-                        if (nutritionArray[12] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[12] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[12]  = extractValue(4, element.text, 12)
                             hasNutritionalInformation = true
                         }
@@ -501,7 +501,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Iron")) {
                     for (element in line.elements) {
-                        if (nutritionArray[13] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[13] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[13] = extractValue(2, element.text, 13)
                             hasNutritionalInformation = true
                         }
@@ -510,7 +510,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (line.text.contains("Potassium")) {
                     for (element in line.elements) {
-                        if (nutritionArray[14] == 0 && element.text.any { it.isDigit() }) {
+                        if (nutritionArray[14] == 0.0f && element.text.any { it.isDigit() }) {
                             nutritionArray[14] = extractValue(4, element.text, 14)
                             hasNutritionalInformation = true
                         }
@@ -554,10 +554,11 @@ class MainActivity : AppCompatActivity() {
     // Extracts value from an element.text
     // Also ensures that the number read is of correct size
     // And that a "g" has not been read as a 9
-    private fun extractValue(digitsToTake: Int, element: String, correspondingArray: Int): Int {
+    private fun extractValue(digitsToTake: Int, element: String, correspondingArray: Int): Float {
         Log.d(TAG, element + " NUMBER BEING PARSED")
         var numberToTake = ""
         var isGPresent = false
+        var hasDecimals = false
 
         // Handle if we're somehow reading the percentage value
         // Instead of the raw value
@@ -566,23 +567,31 @@ class MainActivity : AppCompatActivity() {
                     1300f, 18f, 4700f)
             val percentageDV = element.filter { it.isDigit() }.toInt()
             return if (percentageDV == 0)
-                0
+                0.0f
             else
-                (nutrientDVs[correspondingArray] / percentageDV).toInt()
+                (nutrientDVs[correspondingArray] / percentageDV).toFloat()
         }
-        
+
         for (char in element) {
             if (char == 'g')
                 isGPresent = true
             else if (char.isDigit() && !isGPresent)
                 numberToTake += char
+            else if (char == '.' && !isGPresent) {
+                numberToTake += char
+                hasDecimals = true
+            }
         }
         // If "g" is not present, it means it has wrongly been interpreted as a 9
         // So we need to drop it so the value is right
         if (!isGPresent) {
             numberToTake = numberToTake.dropLast(1)
         }
-        return numberToTake.take(digitsToTake).toInt()
+
+        return if (hasDecimals)
+            numberToTake.toFloat()
+        else
+            numberToTake.take(digitsToTake).toFloat()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -625,10 +634,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Go to DisplayTextActivity to show recognized text
-    private fun sendText(message: String, nutritionArray: IntArray) {
+    private fun sendText(message: String, nutritionArray: FloatArray) {
         val intent = Intent(this, DisplayTextActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, message)
-            putExtra("intArray", nutritionArray)
+            putExtra("floatArray", nutritionArray)
         }
         startActivity(intent)
 

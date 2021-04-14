@@ -22,7 +22,7 @@ class DisplayTextActivity : AppCompatActivity() {
     private lateinit var linearLayoutManagerPies: LinearLayoutManager
     private lateinit var adapter: RecyclerAdapter
     private lateinit var adapterPies: RecyclerAdapterPies
-    private lateinit var nutritionArray: IntArray
+    private lateinit var nutritionArray: FloatArray
     private var isPale = false
     private var isViewingPies = false
 
@@ -58,7 +58,7 @@ class DisplayTextActivity : AppCompatActivity() {
         // Get the Intent that started this activity and extract the string
         val message = intent.getStringExtra(EXTRA_MESSAGE)
         @Suppress("UNCHECKED_CAST")
-        nutritionArray = intent.getSerializableExtra("intArray") as IntArray
+        nutritionArray = intent.getSerializableExtra("floatArray") as FloatArray
 
         // Set up recycler views
         linearLayoutManager = LinearLayoutManager(this)
