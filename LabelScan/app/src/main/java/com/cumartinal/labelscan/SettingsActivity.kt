@@ -14,7 +14,6 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_settings.*
 
-
 class SettingsActivity : AppCompatActivity(),
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
@@ -45,23 +44,6 @@ class SettingsActivity : AppCompatActivity(),
             }
         }
         setContentView(R.layout.activity_settings)
-        // Set up bottom navigation and its listener
-        bottom_navigation_main.selectedItemId = R.id.settingsItem
-        bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.favoritesItem -> {
-                    val contextView = findViewById<View>(R.id.bottom_navigation_main)
-                    Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates", Snackbar.LENGTH_LONG)
-                            .setAnchorView(scan_extended_fab)
-                            .show()
-                    false
-                }
-                R.id.settingsItem -> {
-                    true
-                }
-                else -> false
-            }
-        }
 
         supportFragmentManager
                 .beginTransaction()
@@ -113,6 +95,24 @@ class SettingsActivity : AppCompatActivity(),
                     }
                 }
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+
+        // Set up bottom navigation and its listener
+        bottom_navigation_main.selectedItemId = R.id.settingsItem
+        bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.favoritesItem -> {
+                    val contextView = findViewById<View>(R.id.bottom_navigation_main)
+                    Snackbar.make(contextView, "This feature is not yet implemented! Please wait for future updates.", Snackbar.LENGTH_LONG)
+                            .setAnchorView(scan_extended_fab)
+                            .show()
+                    false
+                }
+                R.id.settingsItem -> {
+                    true
+                }
+                else -> false
+            }
+        }
 
     }
 

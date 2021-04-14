@@ -86,7 +86,6 @@
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         app:backgroundTint="?attr/colorPrimaryVariant">
 
-        <!-- This is not an active view so colours are toned down -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             android:id="@+id/bottom_navigation_main"

@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     val contextView = findViewById<View>(R.id.bottom_navigation_main)
                     Snackbar.make(
                             contextView,
-                            "This feature is not yet implemented! Please wait for future updates",
+                            "This feature is not yet implemented! Please wait for future updates.",
                             Snackbar.LENGTH_LONG
                     )
                             .setAnchorView(camera_capture_button)

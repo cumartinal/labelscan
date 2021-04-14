@@ -114,7 +114,7 @@ class DisplayTextActivity : AppCompatActivity() {
                     val contextView = findViewById<View>(R.id.bottom_navigation_main)
                     Snackbar.make(
                         contextView,
-                        "This feature is not yet implemented! Please wait for future updates",
+                        "This feature is not yet implemented! Please wait for future updates.",
                         Snackbar.LENGTH_LONG
                     )
                         .setAnchorView(scan_extended_fab)
