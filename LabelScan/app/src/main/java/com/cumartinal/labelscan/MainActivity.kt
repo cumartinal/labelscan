@@ -589,13 +589,17 @@ class MainActivity : AppCompatActivity() {
         // If "g" is not present, it means it has wrongly been interpreted as a 9
         // So we need to drop it so the value is right
         if (!isGPresent) {
-            numberToTake = numberToTake.dropLast(1)
+            if (numberToTake.length != 1)
+                numberToTake = numberToTake.dropLast(1)
         }
-
-        return if (hasDecimals)
-            numberToTake.toFloat()
+        Log.d(TAG, numberToTake + " NUMBER PARSED")
+        if (hasDecimals)
+             return numberToTake.toFloat()
+        // Don't return an empty string
+        else if (numberToTake.length == 1)
+             return numberToTake.toFloat()
         else
-            numberToTake.take(digitsToTake).toFloat()
+            return numberToTake.take(digitsToTake).toFloat()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
