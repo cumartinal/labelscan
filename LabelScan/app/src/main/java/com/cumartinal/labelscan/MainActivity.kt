@@ -393,6 +393,7 @@ class MainActivity : AppCompatActivity() {
                 if (line.text.contains("Total Fat", true)) {
                     var isAfterNutrientName = false
                     for (element in line.elements) {
+                        // We only want the values that are AFTER the nutrition keyword, so we don't parse any until then
                         if (element.text.contains("Total", true)) {
                             isAfterNutrientName = true
                             // We continue as total fat is two separate words, reducing the risk
@@ -413,6 +414,8 @@ class MainActivity : AppCompatActivity() {
                     for (element in line.elements) {
                         if (element.text.contains("Sat", true)) {
                             isAfterNutrientName = true
+                            // We continue as saturated fat is two separate words, reducing the risk
+                            // That the actual value has collated into the nutrition word
                             continue
                         }
                         if (isAfterNutrientName && !isNutritionElementChanged[2] && element.text.any { it.isDigit() }) {
@@ -428,6 +431,8 @@ class MainActivity : AppCompatActivity() {
                     for (element in line.elements) {
                         if (element.text.contains("Trans", true)) {
                             isAfterNutrientName = true
+                            // We continue as trans fat is two separate words, reducing the risk
+                            // That the actual value has collated into the nutrition word
                             continue
                         }
                         if (isAfterNutrientName && !isNutritionElementChanged[3] && element.text.any { it.isDigit() }) {
@@ -490,8 +495,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                // Recognises Total Sugars thanks to nutritionArray[8] == 0, taking the first line
-                // With 'sugars' and a related value
+                // Recognises Total Sugars and not Added Sugars
                 if (line.text.contains("Sugars", true) && !line.text.contains("Added", true)
                         || line.text.contains("Total Sugars", true)) {
                     var isAfterNutrientName = false
@@ -521,6 +525,7 @@ class MainActivity : AppCompatActivity() {
                                 isNutritionElementChanged[9] = true
                             }
                         }
+                        // Sanity checking and fixing if our Added Sugars value is bigger than the Total Sugars one
                         if (!isNutritionElementChanged[9] && hasSeenNutrientName && element.text.any { it.isDigit() }) {
                             nutritionArray[9] = extractValue(2, element.text, 9)
                             isNutritionElementChanged[9] = true
@@ -639,8 +644,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Extracts value from an element.text
-    // Also ensures that the number read is of correct size
-    // And that a "g" has not been read as a 9
     private fun extractValue(digitsToTake: Int, element: String, correspondingArray: Int): Float {
         var numberToTake = ""
         var isGPresent = false
@@ -658,6 +661,9 @@ class MainActivity : AppCompatActivity() {
                 nutrientDVs[correspondingArray]*(percentageDV/100)
         }
 
+        // Ensure that the number read is of correct size and that a "g" has not been read as a 9
+        // Only has 1 digit but no g -> return that 1 digit
+        // Has x > 1 digits but no g -> return all but last digit
         for (char in element) {
             if (char == 'g')
                 isGPresent = true
