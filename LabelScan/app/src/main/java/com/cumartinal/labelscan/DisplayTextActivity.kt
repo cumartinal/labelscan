@@ -107,7 +107,7 @@ class DisplayTextActivity : AppCompatActivity() {
         )
 
         // Set up bottom navigation
-        bottom_navigation_main.selectedItemId = R.id.placeholder
+        //bottom_navigation_main.selectedItemId = R.id.placeholder
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {

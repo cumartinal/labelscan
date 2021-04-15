@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up bottom navigation and its listener
-        bottom_navigation_main.selectedItemId = R.id.placeholder
+        //bottom_navigation_main.selectedItemId = R.id.placeholder
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {
@@ -657,7 +657,6 @@ class MainActivity : AppCompatActivity() {
             val nutrientDVs = arrayOf(2000f, 78f, 20f, 1f, 300f, 2300f, 275f, 28f, 1f, 50f, 50f, 20f,
                     1300f, 18f, 4700f)
             val percentageDV = element.filter { it.isDigit() }.toFloat()
-            Log.d(TAG, percentageDV.toString() + " PERCENTAGE DV Y'ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
             return if (percentageDV == 0.0f)
                 0.0f
             else
@@ -760,7 +759,7 @@ class MainActivity : AppCompatActivity() {
                 return
             } else {
                 val contextView = findViewById<View>(R.id.bottom_navigation_main)
-                Snackbar.make(contextView, "Double tap back to exit", Snackbar.LENGTH_LONG)
+                Snackbar.make(contextView, "Tap back again to exit", Snackbar.LENGTH_LONG)
                         .setAnchorView(camera_capture_button)
                         .show()
             }
