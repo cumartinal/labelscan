@@ -66,8 +66,8 @@ class DisplayTextActivity : AppCompatActivity() {
             textViewNutrientScroll.visibility = View.VISIBLE
             textViewNutrientPiesScroll.visibility = View.VISIBLE
 
-            textViewNutrientScroll.text = "Serving size: $servingSize"
-            textViewNutrientPiesScroll.text = "Serving size: $servingSize"
+            textViewNutrientScroll.text = "(Serving size: $servingSize)"
+            textViewNutrientPiesScroll.text = "(Serving size: $servingSize)"
         }
 
         // Set up recycler views

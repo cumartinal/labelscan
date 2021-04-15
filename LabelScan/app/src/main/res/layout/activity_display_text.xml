@@ -31,6 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         tools:context=".DisplayTextActivity">
 
         <androidx.core.widget.NestedScrollView
@@ -52,7 +54,11 @@
                     android:id="@+id/textViewNutrientScroll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                    android:layout_gravity="start"
+                    android:layout_marginStart="8dp"
+                    android:visibility="gone"
+                    style="@style/TextAppearance.MdcTypographyStyles.Body2"
+                    android:textSize="18sp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/nutrientRecyclerView"
@@ -86,7 +92,11 @@
                     android:id="@+id/textViewNutrientPiesScroll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="8dp"
+                    style="@style/TextAppearance.MdcTypographyStyles.Body2"
+                    android:textSize="18sp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/nutrientPiesRecyclerView"

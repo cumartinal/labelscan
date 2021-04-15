@@ -36,7 +36,8 @@
             android:id="@+id/nutrientScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="16dp">
@@ -50,7 +51,9 @@
                     android:id="@+id/textViewNutrientScroll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    style="@style/TextAppearance.MdcTypographyStyles.Body2"
+                    android:textSize="18sp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/nutrientRecyclerView"
@@ -68,7 +71,8 @@
             android:id="@+id/nutrientPiesScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="16dp"
@@ -83,7 +87,9 @@
                     android:id="@+id/textViewNutrientPiesScroll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    style="@style/TextAppearance.MdcTypographyStyles.Body2"
+                    android:textSize="18sp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/nutrientPiesRecyclerView"
