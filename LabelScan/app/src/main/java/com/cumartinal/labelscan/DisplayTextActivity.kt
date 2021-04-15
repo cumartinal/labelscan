@@ -59,6 +59,16 @@ class DisplayTextActivity : AppCompatActivity() {
         val message = intent.getStringExtra(EXTRA_MESSAGE)
         @Suppress("UNCHECKED_CAST")
         nutritionArray = intent.getSerializableExtra("floatArray") as FloatArray
+        val servingSize = intent.getSerializableExtra("servingSizeString") as String
+
+        // Set TextView with serving size if it has been recognised
+        if (servingSize != "") {
+            textViewNutrientScroll.visibility = View.VISIBLE
+            textViewNutrientPiesScroll.visibility = View.VISIBLE
+
+            textViewNutrientScroll.text = "Serving size: $servingSize"
+            textViewNutrientPiesScroll.text = "Serving size: $servingSize"
+        }
 
         // Set up recycler views
         linearLayoutManager = LinearLayoutManager(this)

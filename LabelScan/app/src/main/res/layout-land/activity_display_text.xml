@@ -32,7 +32,7 @@
         android:padding="16dp"
         tools:context=".DisplayTextActivity">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/nutrientScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,16 +41,30 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="16dp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/nutrientRecyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingBottom="32dp" />
+                android:orientation="vertical">
 
-        </ScrollView>
+                <TextView
+                    android:id="@+id/textViewNutrientScroll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
 
-        <ScrollView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/nutrientRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"
+                    android:clipToPadding="false"
+                    android:paddingBottom="32dp" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/nutrientPiesScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -60,14 +74,28 @@
             tools:layout_editor_absoluteX="16dp"
             android:visibility="invisible">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/nutrientPiesRecyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingBottom="32dp"/>
+                android:orientation="vertical">
 
-        </ScrollView>
+                <TextView
+                    android:id="@+id/textViewNutrientPiesScroll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/nutrientPiesRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"
+                    android:clipToPadding="false"
+                    android:paddingBottom="32dp"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -83,7 +111,6 @@
         android:contentDescription="@string/bottom_navigation_bar"
         app:backgroundTint="?attr/colorPrimaryVariant"
         app:menu="@menu/bottom_navigation_menu" />
-
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/scan_extended_fab"

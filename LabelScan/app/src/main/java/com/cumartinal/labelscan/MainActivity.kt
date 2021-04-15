@@ -359,6 +359,7 @@ class MainActivity : AppCompatActivity() {
         val nutritionArray = FloatArray(15) { i -> 0.0f}
         val isNutritionElementChanged = BooleanArray(15) { i -> false}
         var hasNutritionalInformation = false
+        var servingSize = ""
 
         // Parses through lines checking if they have text for a nutrient.
         // If so, only takes the FIRST numerical value
@@ -606,14 +607,32 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+
+                // Try to find a serving size
+                // Needs to take into account that bilingual English/Spanish labels exist
+                if (line.text.contains("Serving Size", true) || line.text.contains("Serv. size")) {
+                    var i = -1
+                    for (element in line.elements) {
+                        i++
+                        if ((servingSize == "") && element.text.any { it.isDigit() }) {
+                            if (!line.elements[i+1].text.contains("serving", true)
+                                    && !line.elements[i+1].text.contains("raciones", true)
+                                    && !line.elements[i+1].text.contains("ración", true)) {
+                                servingSize = element.text + " " + line.elements[i+1].text
+                                hasNutritionalInformation = true
+                            }
+                        }
+                    }
+                }
             }
-        }
+        } // Yes this is unreadable code I know
 
         // Check if we have extracted nutritional information or not, and act accordingly
         if (hasNutritionalInformation) {
+            Log.d(TAG, "SERVING SIZE IS: $servingSize")
             image_analysis_progress_indicator.hide()
             analysisProgressDialog.cancel()
-            sendText(recognizedText, nutritionArray)
+            sendText(recognizedText, nutritionArray, servingSize)
         } else {
             image_analysis_progress_indicator.hide()
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
@@ -730,10 +749,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Go to DisplayTextActivity to show recognized text
-    private fun sendText(message: String, nutritionArray: FloatArray) {
+    private fun sendText(message: String, nutritionArray: FloatArray, servingSize: String) {
         val intent = Intent(this, DisplayTextActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, message)
             putExtra("floatArray", nutritionArray)
+            putExtra("servingSizeString", servingSize)
         }
         startActivity(intent)
 
