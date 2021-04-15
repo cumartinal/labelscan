@@ -1,5 +1,7 @@
 package com.cumartinal.labelscan
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -25,6 +27,7 @@ class DisplayTextActivity : AppCompatActivity() {
     private lateinit var nutritionArray: FloatArray
     private var isPale = false
     private var isViewingPies = false
+    private var shortAnimationDuration: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,7 +137,6 @@ class DisplayTextActivity : AppCompatActivity() {
         )
 
         // Set up bottom navigation
-        //bottom_navigation_main.selectedItemId = R.id.placeholder
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {
@@ -164,6 +166,9 @@ class DisplayTextActivity : AppCompatActivity() {
             }
         }
 
+        // Retrieve and cache the system's default "short" animation time
+        shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
+
         // Set appbar listeners
         topAppBar.setNavigationOnClickListener {
             onBackPressed()
@@ -173,16 +178,24 @@ class DisplayTextActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.piesMenuItem -> {
                     isViewingPies = true
-                    nutrientPiesScrollView.visibility = View.VISIBLE
-                    nutrientScrollView.visibility = View.INVISIBLE
+                    if (isMotionReduced) {
+                        nutrientScrollView.visibility = View.GONE
+                        nutrientPiesScrollView.visibility = View.VISIBLE
+                    } else  {
+                        crossfade(nutrientScrollView, nutrientPiesScrollView)
+                    }
                     topAppBar.menu.findItem(R.id.piesMenuItem).isVisible = false
                     topAppBar.menu.findItem(R.id.listMenuItem).isVisible = true
                     true
                 }
                 R.id.listMenuItem -> {
                     isViewingPies = false
-                    nutrientPiesScrollView.visibility = View.INVISIBLE
-                    nutrientScrollView.visibility = View.VISIBLE
+                    if (isMotionReduced) {
+                        nutrientPiesScrollView.visibility = View.GONE
+                        nutrientScrollView.visibility = View.VISIBLE
+                    } else {
+                        crossfade(nutrientPiesScrollView, nutrientScrollView)
+                    }
                     topAppBar.menu.findItem(R.id.piesMenuItem).isVisible = true
                     topAppBar.menu.findItem(R.id.listMenuItem).isVisible = false
                     true
@@ -190,6 +203,28 @@ class DisplayTextActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun crossfade(viewToFadeOut: View, viewToFadeIn: View) {
+        viewToFadeIn.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+
+        viewToFadeOut.animate()
+                .alpha(0f)
+                .setDuration(shortAnimationDuration.toLong())
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        viewToFadeOut.visibility = View.GONE
+                    }
+                })
+
     }
 
     // Called when "+ Scan" button is pressed, creates MainActivity
