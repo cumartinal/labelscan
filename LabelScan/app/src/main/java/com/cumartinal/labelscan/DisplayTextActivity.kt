@@ -68,6 +68,23 @@ class DisplayTextActivity : AppCompatActivity() {
 
             textViewNutrientScroll.text = "(Serving size: $servingSize)"
             textViewNutrientPiesScroll.text = "(Serving size: $servingSize)"
+
+            // Very inelegant way to setContentDescription for edge cases
+            // But I do not have the time to implement it properly
+            when (servingSize) {
+                "1/3 cup" -> {
+                    textViewNutrientScroll.contentDescription = "(Serving size: 1/3 of a cup)"
+                    textViewNutrientPiesScroll.contentDescription = "(Serving size: 1/3 of a cup)"
+                }
+                "2/3 cup" -> {
+                    textViewNutrientScroll.contentDescription = "(Serving size: 2/3 of a cup)"
+                    textViewNutrientPiesScroll.contentDescription = "(Serving size: 2/3 of a cup)"
+                }
+                "3/4 cup" -> {
+                    textViewNutrientScroll.contentDescription = "(Serving size: 3/4 of a cup)"
+                    textViewNutrientPiesScroll.contentDescription = "(Serving size: 3/4 of a cup)"
+                }
+            }
         }
 
         // Set up recycler views

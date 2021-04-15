@@ -618,7 +618,10 @@ class MainActivity : AppCompatActivity() {
                             if (!line.elements[i+1].text.contains("serving", true)
                                     && !line.elements[i+1].text.contains("raciones", true)
                                     && !line.elements[i+1].text.contains("ración", true)) {
-                                servingSize = element.text + " " + line.elements[i+1].text
+                                if (line.elements[i+1].text == "0z")
+                                    servingSize = element.text + " " + "oz"
+                                else
+                                    servingSize = element.text + " " + line.elements[i+1].text.toLowerCase()
                                 hasNutritionalInformation = true
                             }
                         }
