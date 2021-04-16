@@ -2,36 +2,48 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.ListPreference
-        android:dialogTitle="Appearance"
-        android:entries="@array/list_preference_theming_entries"
-        android:entryValues="@array/list_preference_theming_entry_values"
-        android:icon="@drawable/ic_baseline_brush_24"
-        app:key="theming"
-        app:summary="Choose app theme"
-        app:title="Appearance"/>
+    <PreferenceCategory
+        app:key="look_category"
+        app:title="Appearance">
 
-    <SwitchPreference
-        android:key="reducedMotion"
-        android:title="Enable reduced motion"
-        android:summary="Reduce the amount and intensity of animations"
-        android:defaultValue="false"
-        android:icon="@drawable/ic_animation_black_24dp"
-        />
+        <androidx.preference.ListPreference
+            android:dialogTitle="Theme"
+            android:entries="@array/list_preference_theming_entries"
+            android:entryValues="@array/list_preference_theming_entry_values"
+            android:icon="@drawable/ic_baseline_brush_24"
+            app:key="theming"
+            app:summary="Choose app theme"
+            app:title="Theme"/>
 
-    <SwitchPreference
-        android:key="doubleTapExit"
-        android:title="Double tap back to exit app"
-        android:defaultValue="false"
-        android:icon="@drawable/ic_door_front"
-        />
+    </PreferenceCategory>
 
-    <SwitchPreference
-        android:key="earcons"
-        android:title="Play sound"
-        android:defaultValue="true"
-        android:icon="@drawable/ic_volume_up_black_24dp"
-        />
+    <PreferenceCategory
+        app:key="behaviour_category"
+        app:title="Behaviour">
+
+        <SwitchPreference
+            android:key="reducedMotion"
+            android:title="Enable reduced motion"
+            android:summary="Reduce the amount and intensity of animations"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_animation_black_24dp"
+            />
+
+        <SwitchPreference
+            android:key="doubleTapExit"
+            android:title="Double tap back to exit app"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_door_front"
+            />
+
+        <SwitchPreference
+            android:key="earcons"
+            android:title="Play sound"
+            android:defaultValue="true"
+            android:icon="@drawable/ic_volume_up_black_24dp"
+            />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
 
