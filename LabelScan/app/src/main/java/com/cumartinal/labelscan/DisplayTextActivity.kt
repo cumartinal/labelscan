@@ -7,13 +7,18 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.transition.Explode
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import android.transition.Slide
+import android.view.Gravity
+import android.transition.Fade
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_display_text.*
 
@@ -31,6 +36,14 @@ class DisplayTextActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Entry transition
+        with(window) {
+            requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+            enterTransition = Slide (Gravity.RIGHT)
+            enterTransition.propagation = null
+        }
+
         // Color value to pass to RecyclerAdapterPies
         // Apply theme depending on saved preference
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
@@ -204,6 +217,7 @@ class DisplayTextActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
     }
 
     private fun crossfade(viewToFadeOut: View, viewToFadeIn: View) {

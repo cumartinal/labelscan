@@ -1,15 +1,19 @@
 package com.cumartinal.labelscan
 
 import android.Manifest
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.transition.Slide
 import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.view.Window
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -758,7 +762,15 @@ class MainActivity : AppCompatActivity() {
             putExtra("floatArray", nutritionArray)
             putExtra("servingSizeString", servingSize)
         }
-        startActivity(intent)
+
+        // Start activity with or without slide animation
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+        if (!sharedPreferences.getBoolean("reducedMotion", false))
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        else
+            startActivity(intent)
+
+
 
     }
 
