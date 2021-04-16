@@ -19,6 +19,8 @@
     <color name="purple_strong">#FF004b57</color>
 
     <color name="translucent_black">#AA000000</color>
+    <color name="white_87_alpha">#DEFFFFFF</color>
+    <color name="white_60_alpha">#99FFFFFF</color>
 
     <color name="custom_colorOnSurface_pale">#FF323232</color>
     <color name="custom_textColorPrimary">#FF6B6B6B</color>
