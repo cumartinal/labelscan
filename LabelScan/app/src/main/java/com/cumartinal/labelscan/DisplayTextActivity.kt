@@ -137,6 +137,7 @@ class DisplayTextActivity : AppCompatActivity() {
         )
 
         // Set up bottom navigation
+        bottom_navigation_main.menu.getItem(0).isCheckable = false
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {

@@ -110,6 +110,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up bottom navigation and its listener
+        // First we need to make no item be "selected" as the current screen is the Scan one
+        bottom_navigation_main.menu.getItem(0).isCheckable = false
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {
