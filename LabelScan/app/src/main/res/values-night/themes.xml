@@ -15,8 +15,8 @@
         <item name="colorOnSurface">@color/custom_colorOnSurface</item>
 
         <!-- Customize your theme here. -->
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
-        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialogNight</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialogNight</item>
         <item name="textAppearanceHeadline1">@style/TextAppearance.MdcTypographyStyles.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MdcTypographyStyles.Headline2</item>
         <item name="textAppearanceHeadline3">@style/TextAppearance.MdcTypographyStyles.Headline3</item>
@@ -32,11 +32,14 @@
         <item name="textAppearanceOverline">@style/TextAppearance.MdcTypographyStyles.Overline</item>
     </style>
 
-    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
-        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body.Text</item>
+    <style name="ThemeOverlay.App.MaterialAlertDialogNight" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.TextNight</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body.TextNight</item>
         <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.ButtonNight</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.ButtonNight</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.App.ButtonNight</item>
+        <item name="android:checkedTextViewStyle">@style/Widget.App.CheckedTextViewNight</item>
     </style>
 
     <style name="Theme.LabelScan.Pale" parent="Theme.LabelScan">

@@ -51,6 +51,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/green_low</item>
         <item name="android:colorBackground">@color/custom_colorBackground_pale</item>
         <item name="android:textColorPrimary">@color/custom_textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/custom_textColorPrimary</item>
 
     </style>
 

@@ -110,7 +110,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up bottom navigation and its listener
-        //bottom_navigation_main.selectedItemId = R.id.placeholder
         bottom_navigation_main.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.favoritesItem -> {
@@ -157,13 +156,12 @@ class MainActivity : AppCompatActivity() {
             Intent.ACTION_SEND -> {
                 if (intent.type?.startsWith("image/") == true) {
                     (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
-                        // Update UI to reflect image being shared
                         analyze(it)
                     }
                 }
             }
             else -> {
-                // Handle other intents, such as being started from the home screen
+                // Don't do anything, other intents are already handled on the other parts of onCreate
             }
         }
 
@@ -621,7 +619,7 @@ class MainActivity : AppCompatActivity() {
                                 if (line.elements[i+1].text == "0z")
                                     servingSize = element.text + " " + "oz"
                                 else
-                                    servingSize = element.text + " " + line.elements[i+1].text.toLowerCase()
+                                    servingSize = element.text + " " + line.elements[i+1].text.toLowerCase(Locale.getDefault())
                                 hasNutritionalInformation = true
                             }
                         }

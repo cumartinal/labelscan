@@ -2,14 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
+    <androidx.preference.ListPreference
         android:dialogTitle="Appearance"
         android:entries="@array/list_preference_theming_entries"
         android:entryValues="@array/list_preference_theming_entry_values"
         android:icon="@drawable/ic_baseline_brush_24"
         app:key="theming"
         app:summary="Choose app theme"
-        app:title="Appearance" />
+        app:title="Appearance"/>
 
     <SwitchPreference
         android:key="reducedMotion"
