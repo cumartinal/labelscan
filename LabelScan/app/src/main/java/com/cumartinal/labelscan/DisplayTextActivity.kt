@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.transition.Explode
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -18,7 +17,6 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.transition.Slide
 import android.view.Gravity
-import android.transition.Fade
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_display_text.*
 

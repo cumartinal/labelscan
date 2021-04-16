@@ -13,8 +13,7 @@ class CustomApplication : Application() {
 
         // Apply theme depending on saved preference
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
-        val themingValue = sharedPreferences.getString("theming", "")
-        when (themingValue) {
+        when (sharedPreferences.getString("theming", "")) {
             "Light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             "Dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             "Pale" -> {
