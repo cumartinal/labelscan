@@ -4,7 +4,7 @@ An Android app that can scan FDA nutrition labels and present them in a more acc
 
 ## General info
 
-The original release () was how the project looked like at the date of submission. I plan to polish and improve the app, doing things like:
+The original release ([v1.0.0](https://github.com/cumartinal/labelscan/releases/tag/v1.0.0)) was how the project looked like at the date of submission. I plan to polish and improve the app, doing things like:
 
 * Improving/rewriting the UI code and app logic
 * Improve overall UX
